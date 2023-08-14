@@ -156,8 +156,6 @@
 		var _toastContent =
 			'<div class="am-toast am-toast-mask"><span><span class="am-toast-notice-content">' +
 			msg + '</span></span></div>'
-		console.log('_toastContent', _toastContent);
-		console.log('$(body)', $('body'));
 		$('body').append(_toastContent)
 		setTimeout(function () {
 			$(".am-toast").fadeOut();
@@ -167,21 +165,20 @@
 
 	$(function () {
 		$('.tk-button').click(function () {
-			// toast('提交成功')
-			// console.log('111');
 			tuikuan()
 		})
 		var tuikuan = function () {
-
 			let order = $(".tk-input").val(); // 姓名
 			if (order == '') {
 				toast('订单号不能为空')
 				return false
 			}
 			$.ajax({
-				// type: 'POST',
-				url: axiosBaseUrl + 'api/refund/apply/' + order,
-
+				type: 'POST',
+				url: axiosBaseUrl + 'api/v1/duanjuorder/tuiPackorder',
+				data: {
+					trade_no: order
+				},
 				success: function (res) {
 					toast(res.msg)
 					$(".tk-input").val('')
