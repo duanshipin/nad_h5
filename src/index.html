@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	<head>
+		<meta charset="UTF-8">
+		
+		<meta name="viewport"
+			content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<title>百元话费券限时抢</title>
+		<link rel="stylesheet" href="https://kaishen.oss-cn-beijing.aliyuncs.com/gong/static/css/app.294a59d7.css">
+		<link rel="stylesheet" href="https://kaishen.oss-cn-beijing.aliyuncs.com/gong/static/css/p20.38683d08.css">
+
+		<!-- 引入样式文件 -->
+		<link rel="stylesheet" href="https://kaishen.oss-cn-beijing.aliyuncs.com/gong/static/css/views/index.css">
+		<link rel="stylesheet" href="https://kaishen.oss-cn-beijing.aliyuncs.com/gong/static/vant/index.css" />
+		<!-- 引入 Vue 和 Vant 的 JS 文件 -->
+		<script src="https://kaishen.oss-cn-beijing.aliyuncs.com/gong/static/vue/vue.min.js"></script>
+		<script src="https://kaishen.oss-cn-beijing.aliyuncs.com/gong/static/vant/vant.min.js"></script>
+		<script src="https://kaishen.oss-cn-beijing.aliyuncs.com/gong/static/vue/axios.min.js"></script>
+		<script src="https://kaishen.oss-cn-beijing.aliyuncs.com/gong/static/js/CryptoJS.min.js"></script>
+		<script src="https://kaishen.oss-cn-beijing.aliyuncs.com/gong/static/js/app.js"></script>
+		<script>(function() {var _53code = document.createElement("script");_53code.src = "https://tb.53kf.com/code/code/4a4b7cf22647965ddefd94e12549b2ec0/1";var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(_53code, s);})();</script>
+		<meta name="referrer" content="always">
+		<meta name="head:count" content="2">
+		<style>
+			.container-main {
+				position: fixed;
+				background: #fff;
+				top: 50%;
+				left: 50%;
+				transform: translate(-50%, -50%);
+				z-index: 99;
+			    align-items: center;
+			    justify-content: center;
+			}
+			
+			.container-main .column,.container-main,.dialog {
+			    display: flex;
+			    flex-direction: column
+			}
+			
+			.container-main .dialog {
+			    align-items: center;
+			    background: #fff;
+			    border-radius: .2rem;
+			    height: 7.03rem;
+			    width: 6rem
+			}
+			
+			.container-main .title {
+			    font-weight: 700;
+			    margin-top: .42rem
+			}
+			
+			.container-main .subtitle,.title {
+			    color: #000;
+			    font-size: .32rem;
+			    height: .52rem
+			}
+			
+			.container-main .subtitle {
+			    font-weight: 400;
+			    line-height: .52rem
+			}
+			
+			.container-main .subtitle>span {
+			    color: #ff3843
+			}
+			
+			.container-main .box {
+			    background: url(https://kaishen.oss-cn-beijing.aliyuncs.com/gong/static/image/box-bg.5f294cf9.png) no-repeat;
+			    background-size: 100% 100%;
+			    height: 2.16rem;
+			    margin-top: .26rem;
+			    position: relative;
+			    width: 5.06rem
+			}
+			
+			.container-main .des {
+			    bottom: .05rem;
+			    color: #817f7f;
+			    font-size: .24rem;
+			    line-height: .66rem;
+			    margin-left: .15rem;
+			    position: absolute;
+			    right: .58rem
+			}
+			
+			.container-main .tagBox {
+			    align-items: center;
+			    background: linear-gradient(160deg,#ff8662,#ff4e33);
+			    border-radius: 0 0 .25rem .25rem;
+			    color: #fff;
+			    flex-direction: column;
+			    font-size: .32rem;
+			    font-weight: 700;
+			    height: 1.22rem;
+			    left: .38rem;
+			    line-height: .45rem;
+			    top: .34rem;
+			    width: 1.96rem
+			}
+			
+			.container-main .priceBox,.tagBox {
+			    display: flex;
+			    justify-content: center;
+			    position: absolute
+			}
+			
+			.container-main .priceBox {
+			    box-sizing: border-box;
+			    flex-direction: row;
+			    left: 2.4rem;
+			    top: .9rem;
+			    width: 2.66rem
+			}
+			
+			.container-main .priceBox .mainSymbol {
+			    color: #000;
+			    font-size: .32rem;
+			    font-weight: 700;
+			    line-height: .65rem
+			}
+			
+			.container-main .priceBox .mainSymbolV2 {
+			    color: #000;
+			    font-size: .46rem;
+			    font-weight: 700;
+			    line-height: .65rem
+			}
+			
+			.container-main .priceBox .price {
+			    color: #000;
+			    font-size: .48rem;
+			    font-weight: 700;
+			    line-height: .45rem
+			}
+			
+			.container-main .priceBox .priceV2 {
+			    color: #000;
+			    font-size: .73rem;
+			    font-weight: 700;
+			    line-height: .45rem;
+			    margin-left: .02rem
+			}
+			
+			.container-main .priceBox .originPrice {
+			    color: #827f7f;
+			    font-size: .3rem;
+			    line-height: .66rem;
+			    margin-left: .15rem;
+			    text-decoration: line-through
+			}
+			
+			.container-main .countBox {
+			    display: flex;
+			    flex-direction: row;
+			    height: .7rem;
+			    margin-top: .31rem
+			}
+			
+			.container-main .second {
+			    color: #4f4f4f;
+			    font-size: .5rem;
+			    line-height: .7rem;
+			    width: 1.05rem
+			}
+			
+			.container-main .secondPrefix {
+			    color: #4f4f4f;
+			    font-size: .3rem;
+			    line-height: .8rem
+			}
+			
+			.container-main .bottomBox {
+			    align-items: flex-end;
+			    display: flex;
+			    flex-direction: column;
+			    position: relative;
+			    width: 5.38rem
+			}
+			
+			.container-main .btn {
+			    background: linear-gradient(283deg,#ff5910,#ffa832);
+			    border-radius: .42rem;
+			    font-size: .32rem;
+			    font-weight: 600;
+			    height: .84rem;
+			    line-height: .45rem;
+			    width: 5.38rem;
+				border: none;
+			}
+			
+			.container-main .btn,.container-main .bubble {
+			    align-items: center;
+			    color: #fff;
+			    display: flex;
+			    justify-content: center
+			}
+			
+			.container-main .bubble {
+				background-image: url('https://kaishen.oss-cn-beijing.aliyuncs.com/gong/static/image/bubble.7bf79dc1.png');
+			    background-size: 100% 100%;
+			    height: .49rem;
+			    margin-right: .36rem;
+			    padding-bottom: .06rem;
+			    width: 1.78rem
+			}
+			
+			.container-main .bubble,.container-main .tips {
+			    font-size: .24rem;
+			    font-weight: 400
+			}
+			
+			.container-main .tips {
+			    color: #9c9898;
+			    margin-top: .1rem
+			}
+			.container-main .close_svg__icon {
+				position: absolute;
+				bottom: -1rem;
+			}
+			.baohan{
+			    margin-top: 0px;
+			}
+			.baohan span{
+			    font-size: 12px;
+			    color: rgba(255,255,255,.68);
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="app">
+			<!--[-->
+			<!--[-->
+			<main class="container">
+				<section class="flex flex-col items-center justify-center top">
+					<!---->
+					<h3 style="margin: 0.2rem auto 0rem;">{{details.title}}</h3>
+					<p style="margin-bottom:0.08rem;font-size:.2rem;color: rgba(255,255,255,.68);"><span>{{details.price}}元购买专属话费权益会员</span></p>
+					<div class="flex items-center count-box">
+						<p>支付剩余时间</p>
+						<div role="timer" class="van-count-down font-normal" style="margin:0 4px;font-size:inherit;">
+							<van-count-down class="flex items-center"
+								:time="Number(details.payend_time * 1000 - new Date().getTime())" millisecond>
+								<template #default="timeData">
+									<span class="block">{{ timeData.minutes }}</span>
+									<span class="colon">:</span>
+									<span class="block">{{ timeData.seconds }}</span>
+									<span class="colon">:</span>
+									<span class="block">{{ timeData.milliseconds }}</span>
+								</template>
+							</van-count-down>
+						</div>
+					</div>
+					<div class="baohan">
+					   <span v-if="details.huafei > 100"> (话费券:16张满100减5优惠券, 12张满200减10优惠券)</span>
+					   <span v-else>(话费券:8张满100减5优惠券, 6张满200减10优惠券)</span>
+					</div>
+					<!-- <div class="operator-warp">
+						<div v-html="details.body"></div>
+					</div> -->
+				</section>
+				<section class="section s1">
+					<div class="operator-warp" data-v-a9f2f654=""><img src="https://coupon-czydd.oss-cn-hangzhou.aliyuncs.com/uploads/20230202/sanwang_logo.png" data-v-a9f2f654=""></div>
+					<div class="phone flex items-center">
+						<div class="flex-1">
+							<van-field v-model="form.phone" type="tel" style="background: none;padding: 10px 0;"
+								:maxlength="11" placeholder="请输入手机号" />
+						</div>
+						<img class="input-icon"
+							src="https://coupon-czydd.oss-cn-hangzhou.aliyuncs.com/uploads/20221025/2ed7ab92f0b07e4f814fd0eeffdb9a5a.png">
+					</div>
+					<div class="flex items-center save-box">
+						<span>待节省金额</span>
+						<span style="color:#2d89ff;margin-left:6px;">{{Number(details.huafei - details.price)}}元</span>
+					</div>
+					<div class="flex justify-between price-wrap" style="align-items:center;" v-if="details.huafei==200">
+						<div class="flex flex-col items-center justify-center price-item">
+							<p class="price-value">
+								<span>50</span>
+								<span>元</span>
+							</p>
+							<p>市场价：50元</p>
+						</div>
+						<div class="flex flex-col items-center justify-center price-item active">
+							<p class="price-value">
+								<span>{{details.huafei}}</span>
+								<span>元</span>
+							</p>
+							<p style="color: #fff;">实付{{details.price}}元</p>
+						</div>
+						<div class="flex flex-col items-center justify-center price-item">
+							<p class="price-value">
+								<span>100</span>
+								<span>元</span>
+							</p>
+							<p>市场价：100元</p>
+						</div>
+					</div>
+					<div class="flex justify-between price-wrap" style="align-items:center;" v-if="details.huafei==100">
+						<div class="flex flex-col items-center justify-center price-item">
+							<p class="price-value">
+								<span>20</span>
+								<span>元</span>
+							</p>
+							<p>市场价：20元</p>
+						</div>
+						<div class="flex flex-col items-center justify-center price-item active">
+							<p class="price-value">
+								<span>{{details.huafei}}</span>
+								<span>元</span>
+							</p>
+							<p style="color: #fff;">实付{{details.price}}元</p>
+						</div>
+						<div class="flex flex-col items-center justify-center price-item">
+							<p class="price-value">
+								<span>50</span>
+								<span>元</span>
+							</p>
+							<p>市场价：50元</p>
+						</div>
+					</div>
+					<div class="flex items-center shadow-sm price-tips">
+						<van-icon name="coupon-o" color="#F7D00C" size="16" />
+						<span style="margin-left: 8px;color: #555;font-size: .24rem;">全国三网通用，不成功可退。</span>
+					</div>
+					<p style="margin-bottom:.16rem;font-size: .28rem;">支付方式</p>
+					<div class="pay-mothed" style="margin-top: .3rem;">
+						<van-radio-group v-model="form.payMethods">
+							<van-radio name="wechat" label-disabled>
+								<div class="pay-mothed-item">
+									<img src="https://kaishen.oss-cn-beijing.aliyuncs.com/gong/static/image/weixin.png" alt="">
+									<span>微信</span>
+									<span style="display: none;"></span>
+								</div>
+							</van-radio>
+						</van-radio-group>
+					</div>
+					<div class="pay-mothed" style="margin-top: .3rem;" v-show="ua=='zhifubao' || ua=='other'">
+						<van-radio-group v-model="form.payMethods">
+							<van-radio name="alipay" label-disabled>
+								<div class="pay-mothed-item">
+									<img src="https://kaishen.oss-cn-beijing.aliyuncs.com/gong/static/image/zhifubaozhifu.png" alt="">
+									<span>支付宝</span>
+									<span>首单随机立减，最高至免单</span>
+								</div>
+							</van-radio>
+						</van-radio-group>
+					</div>
+					<div style="margin-top: .1rem;">
+						<div class="flex items-center save-box info">
+							<span>实际支付金额：</span>
+							<span style="color:#2d89ff;">{{details.price}}元</span>
+						</div>
+						<div class="flex items-center save-box info">
+							<span>实际到账话费券包金额：</span>
+							<span style="color:#2d89ff;">{{details.huafei}}元</span>
+						</div>
+					</div>
+					<div class="agreement">
+						<div class="tips">
+							<van-checkbox v-model="form.checked" icon-size="18px">
+								我已阅读并同意
+								<a href="./privacy.html" style="color: #F24220;">《隐私条款》</a>
+								及
+								<a href="./agreement.html" style="color: #F24220;">《服务协议》</a>
+							</van-checkbox>
+						</div>
+					</div>
+					<div class="btn-pay">
+						<el-button class="pay" @click="submit"> 立即支付
+							<div class="discounts"> 节省{{Number(details.huafei - details.price)}}元 </div>
+						</el-button>
+					</div>
+				</section>
+				<section class="section s2">
+					<div style="margin-bottom:14px;" class="flex items-center justify-center">
+						<span style="padding:0 10px;font-weight:600;">话费优惠券包说明</span>
+					</div>
+					<div class="intro-box">
+						<div v-html="details.xuzhi"></div>
+					</div>
+				</section>
+				<aside class="aside">
+					<button class="asbtn" style="color: #fff;" @click="ruleShow=true">规则</button>
+					<!-- <a class="asbtn" style="color: #fff;" :href="configInfo.kefu_url" target="_blank">客服</a> -->
+					<!-- <a class="asbtn-line" href="complaint.html" target="_blank">投诉<br>退款</a> -->
+					<!-- <button class="asbtn-line orange" target="_blank" @click="vouchersShow=true"> 查券<br>充值</button> -->
+				</aside>
+				<section class="section" style="text-align:center;background:none;">
+					<p style="color:#999;">
+						<small>页面由昆山朴璞房产租赁有限公司提供技术支持</small>
+					</p>
+					<p style="color:#999;">
+						<small>苏ICP备2023022803号-1</small>
+					</p>
+					<p style="color:#999;">
+						<small>客服电话：
+							<a class="tel" :href="configInfo.shouhuo_tel">{{configInfo.shouhuo_tel}}</a>
+						</small>
+					</p>
+				</section>
+			</main>
+
+			<!-- 规则弹窗 -->
+			<div class="van-overlay" v-show="ruleShow"></div>
+			<transition name="van-fade">
+				<div class="van-popup van-popup--center" style="z-index: 2008; background: none;" v-show="ruleShow">
+					<div>
+						<div style="text-align: right; margin-bottom: 16px;">
+							<i class="van-badge__wrapper van-icon" style="font-size: 0.62rem;" @click="closeRuleHandle">
+								<img class="van-icon__image"
+									src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAD4AAAA+CAMAAABEH1h2AAAAn1BMVEUAAACDg4OGhoaFhYWFhYWGhoaEhISGhoaGhoaGhoaGhoaGhoaFhYV+fn6GhoaGhoaFhYWGhoaGhoaFhYWEhISFhYWEhISGhoaGhoaFhYWFhYWFhYWGhoaGhoaFhYWGhoaFhYWGhoaEhIRkZGSGhoZycnLn5+f///9ra2va2tp/f397e3tnZ2d3d3d0dHSEhISCgoJubm5paWnj4+Nvb29KvY/rAAAAI3RSTlMABvvuSM829efiyXx1CvHem9rURBg+IZGHbleoppQpqmROJnc1vOEAAAJUSURBVEjHpdfpdqJAEAXgFlxB3DUxRrPUxbSsirz/s42ZzAynKShluD895zu9SHdXqZqsPtxdbzixrMmw9+p+rFSDrGcjlDKarR+z3vjbpmGSZ1FEFEU6T8IUwGjs3cUd1wbOsaZSdHwGbLcj6+4UCC5UmUsATLvS0LMb1lQbHQCz2gkcFkh9EuOnWBxq9nuCIKI7yQJM1pXLHiCkBxJi0K3QFmJ6KDEs5vsDJPRgEgz6pv602dji+PbG+Md6fN3y+nsdVWSGgBolwL7QS6RZM56lWP6b+hw+NYyP+d/pj4WpC9Mf/2hvCN2cawx/ht+Wdv10rVyKPl1Lw29/8znME3r9OvpV+svkFyy+dR/n0q4cb55r9uMZ/Rt/QkzVXtYU4+nGp8io2suaNKZKrYq5c8+1OfuVekFIghc0hXhRz0hI8IKmBM/qDTkJXtCU4031oEnwgiaNnhohIsELmiKMlG1w5g3NuK0sEAle0ESwRK5Pd7mNSNDHozx5Y+u49v2jvHUOMkETCV7DUTvkkpZ8jp3x0XJtev7RGkeGaebZkSkOLNfM8wNbXBdcy15jblxWTDPPL6viquSae35Vqmnpoi606dlFPa18o67Vz4R/PVa+Up6NCzXOBbbX/ols/0Cr7n+VB62Kk5kq4i1alUbqMGlYmH2WCtqGZWG7orRVSbxUFenbCLIHCnK7ryqzcZAmsk5SOJvaZmTPOhnWzeylbmi5kFuhxfJOI7Yd1jdiw23nfif37vxpA7XZBjrvBRazcR0LRizH3agG8brua9ECd+vaz1/bSqGei1jtKAAAAABJRU5ErkJggg==">
+							</i>
+						</div>
+						<img class="rpopbar"
+							src="http://quan.benxiongxiong.top/uploads/20221025/68c69a153c12bd7d0fe6001c37b77632.png"
+							alt="">
+						<div class="rpop">
+							<div>
+								<div class="flex items-center justify-center rpoptitle">活动规则</div>
+								<div v-html="details.hdguizhe"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</transition>
+
+			<!-- 挽留弹窗 -->
+			<div class="van-overlay" v-show="countDownPopup"></div>
+			<transition name="van-fade">
+				<div class="container-main" v-show="countDownPopup">
+					<div class="dialog">
+						<span class="title">恭喜您</span>
+						<div class="subtitle">获得<span>限时降价</span>购买资格</div>
+						<div class="box">
+							<span class="tagBox">
+								<span>尊贵用户</span>
+								<span>限时特价</span>
+							</span>
+							<div class="priceBox">
+								<span class="mainSymbol">¥</span>
+								<span class="price">{{details.price}}</span>
+								<span class="originPrice">¥{{details.huafei}}</span>
+							</div>
+						</div>
+						<div class="countBox">
+							<span class="second">{{(countTime).toFixed(1)}}</span>
+							<span class="secondPrefix">秒后收回资格，欲购从速</span>
+						</div>
+						<div class="bottomBox">
+							<span class="bubble">不回本可退款</span>
+							<button class="btn" @click="submit">{{details.price}}元立即抢购</button>
+						</div>
+						<span class="tips">你的购买价格击败了98.92%的人</span>
+					</div>
+					<svg class="close_svg__icon" @click="closeCountDownPopup" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" fill="#ddd" style="width: 0.7rem; height: 0.7rem; margin-top: 0.51rem;">
+						<path d="M0 512c0 282.767 229.233 512 512 512s512-229.233 512-512S794.767 0 512 0 0 229.233 0 512zm21.914 0C21.914 241.336 241.336 21.914 512 21.914S1002.086 241.336 1002.086 512 782.664 1002.086 512 1002.086 21.914 782.664 21.914 512zm485.888-47.954L649.759 322.1a32.676 32.676 0 1146.213 46.213L554.025 510.27l141.23 141.23a32.676 32.676 0 01-46.223 46.214l-141.23-141.23-142.971 142.97a32.676 32.676 0 11-46.224-46.213l142.981-142.98-143.697-143.688a32.676 32.676 0 0146.223-46.214l143.688 143.688z"></path>
+					</svg>
+				</div>
+			</transition>
+		</div>
+
+	</body>
+	<script src="https://kaishen.oss-cn-beijing.aliyuncs.com/gong/static/js/jweixin-1.6.0.js"></script>
+	<script>
+		new Vue({
+			el: '#app',
+			data() {
+				return {
+					// 活动规则
+					ruleArr: [],
+					form: {
+						phone: '',
+						checked: true,
+						// 支付方式
+						payMethods: 'alipay'
+					},
+					// 活动规则弹窗开关
+					ruleShow: false,
+					// 查券充值弹窗开关
+					vouchersShow: false,
+					// 配置信息
+					configInfo: {},
+					// 详情
+					details: {},
+					// 计时器
+					timer: '',
+					// 剩余支付时间
+					timeData: {
+						days: '',
+						hours: '',
+						minutes: '',
+						seconds: ''
+					},
+					loading: false,
+					// url参数
+					query: {},
+					code: '',
+					// 当前运行环境
+					ua: '',
+					appid: '',
+					// 挽留弹窗
+					countDownPopup: false,
+					countTime: 60,
+				}
+			},
+			watch: {
+				countDownPopup(newVal) {
+					if(newVal) {
+						this.countDownTime = setInterval(() => {
+							this.countTime-=0.1;
+							if(this.countTime<=0) {
+								this.countDownPopup = false;
+								this.countTime = 60;
+								clearInterval(this.countDownTime)
+							}
+						}, 100)
+					}
+				}
+			},
+			methods: {
+				// 获取规则
+				async getRule() {
+					let res = await axios.post(axiosBaseUrl + '/api/v1/help/guizhe');
+					if (res.status === 200 && res.data.code === 200) {
+						let data = res.data.data;
+						const response = JSON.parse(decrypt(data.data, data.key)).info;
+						this.ruleArr = response;
+					}
+				},
+				// 关闭活动规则弹窗
+				closeRuleHandle() {
+					this.ruleShow = false;
+				},
+				// 获取配置售后电话
+				async getGloablSet() {
+					let res = await axios.post(axiosBaseUrl + '/api/v1/help/getGloablSet');
+					if (res.status === 200 && res.data.code === 200) {
+						let data = res.data.data;
+						const response = JSON.parse(decrypt(data.data, data.key)).info;
+						this.configInfo = response;
+					}
+				},
+				// 确认支付
+				submit() {
+					if(this.countDownPopup) {
+						this.countDownPopup = false;
+						this.countTime = 60;
+						clearInterval(this.countDownTime)
+					}
+					let that = this;
+					let surplusTime = this.details.payend_time * 1000 - new Date().getTime();
+					if (surplusTime <= 0) {
+						vant.Toast('支付时间已到期');
+						return false;
+					}
+					if(!this.form.phone) {
+						vant.Toast('请输入手机号');
+						return false;
+					}
+					var re = /^1[3,4,5,6,7,8,9][0-9]{9}$/;
+					var result = re.test(this.form.phone);
+					if (!result) {
+						vant.Toast('请输入正确的手机号');
+						return false;
+					}
+					if (!this.form.payMethods) {
+						vant.Toast('请选择支付方式');
+						return false;
+					}
+					if (!this.form.checked) {
+						vant.Toast('请阅读并同意隐私条款及服务协议');
+						return false;
+					}
+					if(this.loading) {
+						return false;
+					}
+					this.loading = true;
+					axios.post(axiosBaseUrl + '/api/v1/packorder/addOrder', {
+						id: this.details.id || 1,
+						phone: this.form.phone,
+						pay_type: this.form.payMethods,
+						nadkey: this.query.nadkey,
+						openid: localStorage.getItem(window.location.host+'openid') ? localStorage.getItem(window.location.host+'openid') : '',
+						domain: location.host,
+						bxm_id: this.form.bxm_id,
+						appid: this.appid
+					}).then((res) => {
+						let data = res.data.data;
+						const response = JSON.parse(decrypt(data.data, data.key)).info;
+						// console.log(response)
+						// 使用第三方api支付
+						if(response.is_hongwupay == 2) {
+							setTimeout(() => {
+								this.loading = false;
+							}, 1000)
+							const div = document.createElement('div');
+                            div.innerHTML = response.url;
+                            document.body.appendChild(div);
+                            document.forms[0].submit();
+						}
+						if(response.is_hongwupay == 1) {
+							setTimeout(() => {
+								this.loading = false;
+							}, 2000)
+							window.location.href = response.url;
+							return false;
+						}
+						if (this.form.payMethods == 'wechat') {
+							if (isWeiXin() == 'weixin') {
+								// 否则还使用原来的
+								wx.config({
+									debug: false, // 开启调试模式,调用的所有 api 的返回值会在客户端 alert 出来，若要查看传入的参数，可以在 pc 端打开，参数信息会通过 log 打出，仅在 pc 端时才会打印。
+									...response,
+									jsApiList: ['chooseWXPay'] // 必填，需要使用的 JS 接口列表
+								});
+								wx.ready(function() {
+									// config信息验证后会执行 ready 方法，所有接口调用都必须在 config 接口获得结果之后，config是一个客户端的异步操作，所以如果需要在页面加载时就调用相关接口，则须把相关接口放在 ready 函数中调用来确保正确执行。对于用户触发时才调用的接口，则可以直接调用，不需要放在 ready 函数中。
+									console.log('注册完成')
+									localStorage.setItem('oid', response.oid);
+									localStorage.setItem('phone', that.form.phone);
+									that.rewardOrderCreateSuccess(response);
+								});
+							} else {
+								this.rewardOrderH5CreateSuccess(response);
+							}
+						} else {
+							if (isWeiXin() == 'weixin') {
+								setTimeout(() => {
+									this.loading = false;
+								}, 2000)
+								vant.Toast('请打开手机浏览器进行支付');
+							} else {
+								setTimeout(() => {
+									this.loading = false;
+								}, 2000)
+								const div = document.createElement('formdiv');
+								div.innerHTML = response;
+								document.body.appendChild(div);
+								document.forms[0].setAttribute('target', '_self');
+								document.forms[0].submit();
+								div.remove();
+							}
+						}
+					}).catch((err) => {
+						setTimeout(() => {
+							this.loading = false;
+						},2000)
+					})
+				},
+				// 微信h5支付
+				rewardOrderH5CreateSuccess(res) {
+					window.location.href = res.h5_url;
+					this.loading = false;
+				},
+				// 发起支付
+				rewardOrderCreateSuccess(res) {
+					if (typeof WeixinJSBridge === 'undefined') { // 微信浏览器内置对象。参考微信官方文档
+						if (document.addEventListener) {
+							document.addEventListener('WeixinJSBridgeReady', this.onBridgeReady(res), false)
+						} else if (document.attachEvent) {
+							document.attachEvent('WeixinJSBridgeReady', this.onBridgeReady(res))
+							document.attachEvent('onWeixinJSBridgeReady', this.onBridgeReady(res))
+						}
+					} else {
+						console.log('准备调用微信支付')
+						this.onBridgeReady(res)
+					}
+				},
+				onBridgeReady(data) {
+					console.log('调用微信支付WeixinJSBridge')
+					console.log(data)
+					let that = this;
+					wx.chooseWXPay({
+						timestamp: data
+							.timeStamp, // 支付签名时间戳，注意微信 jssdk 中的所有使用 timestamp 字段均为小写。但最新版的支付后台生成签名使用的 timeStamp 字段名需大写其中的 S 字符
+						nonceStr: data.nonceStr, // 支付签名随机串，不长于 32 位
+						package: data.package, // 统一支付接口返回的prepay_id参数值，提交格式如：prepay_id=\*\*\*）
+						signType: data.signType, // 微信支付V3的传入 RSA ,微信支付V2的传入格式与V2统一下单的签名格式保持一致
+						paySign: data.paySign, // 支付签名
+						success: function(res) {
+							// 支付成功后的回调函数
+							if (res.errMsg === 'chooseWXPay:ok') {
+								// todo
+								vant.Toast({
+									message: '支付成功',
+									icon: 'success'
+								});
+								setTimeout(() => {
+									this.loading = false;
+								},2000)
+								setTimeout(() => {
+									window.location.href = './success.html?oid=' + localStorage
+										.getItem('oid') + '&phone=' + localStorage.getItem(
+											'phone')
+								}, 600)
+							} else {
+								setTimeout(() => {
+									this.loading = false;
+								},2000)
+								vant.Toast(res.errMsg);
+							}
+						},
+						// 支付取消回调函数
+						cancel: function(res) {
+							// vant.Toast('取消支付');
+							// that.wanliuPopupShow();
+							that.countTime = 60;
+							that.countDownPopup = true;
+						},
+						// 支付失败回调函数
+						fail: function(res) {
+							vant.Toast('支付失败');
+						}
+					});
+				},
+				// 获取落地页详情
+				async getDetails() {
+					var res = await axios.post(axiosBaseUrl +
+						`/api/v1/landpage/nuohe?phone=${this.query.phone}&nadkey=${this.query.nadkey}&unid=${this.query.unid}&bxm_id=${this.query.bxm_id}&type=1`
+					);
+					if (res.status === 200 && res.data.code === 200) {
+						let data = res.data.data;
+						const response = JSON.parse(decrypt(data.data, data.key)).info;
+						this.details = response;
+						if(this.details.phone) {
+							this.form.phone = this.details.phone;
+						}
+						this.timeData = TimeDown(response.payend_time);
+						this.timer = setInterval(() => {
+							this.timeData = TimeDown(response.payend_time);
+						}, 1000)
+					}
+				},
+				async getWechatCode() {
+					let getAppid = await axios.post(axiosBaseUrl + '/api/v1/payym/getAppid?domain=' + location
+						.host + '&unid=' + this.query.unid);
+					let apid = getAppid.data.data;
+					let appid = JSON.parse(decrypt(apid.data, apid.key)).info.appid;
+					if (appid) {
+					    this.appid = appid;
+						let code = getQueryVariable('code'); //是否存在code
+						let local = window.location.href;
+						if (!code) {
+							//不存在就打开上面的地址进行授权
+							// 应用授权作用域，snsapi_base (不弹出授权页面，直接跳转，只能获取用户openid)，
+							// snsapi_userinfo (弹出授权页面，可通过openid拿到昵称、性别、所在地。并且， 即使在未关注的情况下，只要用户授权，也能获取其信息 )
+							window.location.href =
+								"https://open.weixin.qq.com/connect/oauth2/authorize?appid=" +
+								appid +
+								"&redirect_uri=" +
+								encodeURIComponent(local) +
+								"&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect";
+						} else {
+							// 获取openid
+							axios.post(axiosBaseUrl + '/api/v1/authwx/getOpenid?code=' + code +'&appid='+appid+'&zid='+this.details+'&domain='+location.host).then((res) => {
+								let data = res.data.data;
+								const response = JSON.parse(decrypt(data.data, data.key)).info;
+								localStorage.setItem(window.location.host+"openid", response.openid);
+								// console.log(res)
+								// console.log(response)
+							})
+						}
+					} else {
+						console.log('appid获取失败')
+					}
+				},
+				// 关闭挽留弹窗
+				closeCountDownPopup() {
+					this.countDownPopup = false;
+				},
+				// 挽留弹窗展示
+				wanliuPopupShow() {
+					// 页面倒计时 如果停留60秒出现挽留弹窗
+					let countDown = 0;
+					this.countDownPopup = false;
+					this.countDownTimer = setInterval(() => {
+						countDown++
+						if (countDown >= 60 && !this.form.phone) {
+							this.countDownPopup = true;
+							countDown = 0;
+							clearInterval(this.countDownTimer)
+						} else if(this.form.phone) {
+							clearInterval(this.countDownTimer)
+						}
+					}, 1000)
+				},
+				isNumber(value) {
+				  return typeof value === 'number' && isFinite(value);
+				},
+				isNumberObject(n) {
+				   return (Object.prototype.toString.apply(n) === '[object Number]');
+				},
+				isCustomNumber(n){
+				   return this.isNumber(n) || this.isNumberObject(n);
+				}
+			},
+			mounted() {
+				this.query = {
+					phone: getQueryVariable('phone'),
+					nadkey: getQueryVariable('nadkey'),
+					unid: getQueryVariable('unid'),
+					bxm_id: getQueryVariable('bxm_id')
+				}
+				// 如果是number类型则默认赋值
+				if(this.isCustomNumber(getQueryVariable('phone'))) {
+					this.form.phone = getQueryVariable('phone')
+				}
+				this.getDetails();
+				this.getRule();
+				this.getGloablSet();
+				const isWechat = isWeiXin();
+				this.ua = isWechat;
+				if (isWechat == 'weixin') {
+					this.form.payMethods = 'zhifubao';
+				// 	if(!localStorage.getItem(window.location.host+'openid')) {
+						this.getWechatCode();
+				// 	}
+				}
+				if (isWechat == 'zhifubao') {
+					this.form.payMethods = 'alipay';
+				}
+				this.wanliuPopupShow();
+
+			}
+		});
+	</script>
+	<script src="https://kaishen.oss-cn-beijing.aliyuncs.com/gong/static/js/xback.js"></script>
+	<script>
+		
+		XBack.listen(function(){
+			window.location.href = './middePage.html'
+		});
+		
+		/*
+		TimeDown.js
+		*/
+		function TimeDown(endDateStr) {
+			//结束时间
+			var endDate = new Date(endDateStr * 1000);
+			//当前时间
+			var nowDate = new Date();
+			//相差的总秒数
+			var totalSeconds = parseInt((endDate - nowDate) / 1000);
+			//天数
+			var days = Math.floor(totalSeconds / (60 * 60 * 24));
+			//取模（余数）
+			var modulo = totalSeconds % (60 * 60 * 24);
+			//小时数
+			var hours = Math.floor(modulo / (60 * 60));
+			modulo = modulo % (60 * 60);
+			//分钟
+			var minutes = Math.floor(modulo / 60);
+			//秒
+			var seconds = modulo % 60;
+			//输出
+			return {
+				days: days,
+				hours: hours,
+				minutes: minutes,
+				seconds: seconds
+			}
+			//延迟一秒执行自己
+			setTimeout(function() {
+				TimeDown(endDateStr);
+			}, 1000)
+		}
+	</script>
+</html>

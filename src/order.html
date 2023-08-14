@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	<head>
+		<meta charset="UTF-8">
+		
+		<meta name="viewport"
+			content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<title>我的订单</title>
+		<link rel="stylesheet" href="https://kaishen.oss-cn-beijing.aliyuncs.com/gong/static/css/app.294a59d7.css">
+		<link rel="stylesheet" href="https://kaishen.oss-cn-beijing.aliyuncs.com/gong/static/css/p20.38683d08.css">
+		<script src="https://kaishen.oss-cn-beijing.aliyuncs.com/gong/static/js/jweixin-1.6.0.js"></script>
+		<!-- 引入样式文件 -->
+		<link rel="stylesheet" href="https://kaishen.oss-cn-beijing.aliyuncs.com/gong/static/vant/index.css" />
+		<!-- 引入 Vue 和 Vant 的 JS 文件 -->
+		<script src="https://kaishen.oss-cn-beijing.aliyuncs.com/gong/static/vue/vue.min.js"></script>
+		<script src="https://kaishen.oss-cn-beijing.aliyuncs.com/gong/static/vant/vant.min.js"></script>
+		<script src="https://kaishen.oss-cn-beijing.aliyuncs.com/gong/static/vue/axios.min.js"></script>
+		<script src="https://kaishen.oss-cn-beijing.aliyuncs.com/gong/static/js/CryptoJS.min.js"></script>
+		<script src="https://kaishen.oss-cn-beijing.aliyuncs.com/gong/static/js/app.js"></script>
+		<!--引入less.min.js文件 -->
+		<link rel="stylesheet/less" href="../static/css/views/order.less">
+		<script src="https://kaishen.oss-cn-beijing.aliyuncs.com/gong/static/js/less.3.8.1.min.js"></script>
+		<meta name="referrer" content="always">
+		<meta name="head:count" content="2">
+	</head>
+
+	<body>
+		<div id="app">
+			<main class="container">
+				<div class="main">
+					<van-pull-refresh v-model="loading" :finished="finished" @refresh="onRefresh" finished-text="已经到底了" @load="getOrderList">
+						<div class="main-item" v-for="(item,index) in list" :key="index">
+							<div class="title">
+								<span>充值号码: {{item.phone}}</span>
+								<span class="stauts warning" v-if="item.status === 1">待支付</span>
+								<span class="stauts err" v-if="item.status === 2">已取消</span>
+								<span class="stauts" v-if="item.status === 3">处理中</span>
+								<span class="stauts" v-if="item.status === 4">已完成</span>
+								<span class="stauts err" v-if="item.status === 5">充值失败</span>
+								<span class="stauts" v-if="item.status === 6">退款申请</span>
+								<span class="stauts err" v-if="item.status === 7">退款拒绝</span>
+								<span class="stauts" v-if="item.status === 8">退款完成</span>
+								<!-- <span class="stauts">充值成功</span> -->
+								<!-- <span class="stauts">待处理</span> -->
+								<!-- <span class="stauts err">话费退款</span> -->
+							</div>
+							<van-card :title="item.title" thumb="https://img01.yzcdn.cn/vant/ipad.jpeg">
+								<template #desc>
+									<div style="margin-top: .1rem;">{{item.huafei}}元 ×1</div>
+									<div>订单金额: ￥{{item.price}}</div>
+									<div>订单编号: {{item.orderno}}</div>
+									<div>下单时间: {{item.create_time}}</div>
+								</template>
+							</van-card>
+							<div class="tips" v-if="item.status === 3">
+								<div>到账时间: 预计<span style="color: #F72912;">{{item.yuji_time}}</span>后到账</div>
+							</div>
+							<div style="height: 1rem;border-top: 1px solid #F3F4F5;"></div>
+						</div>
+						<!-- <div class="main-item">
+							<div class="title">
+								<span>充值号码: 17677785580</span>
+								<span class="stauts">待处理</span>
+							</div>
+							<van-card title="快充-话费100" thumb="https://img01.yzcdn.cn/vant/ipad.jpeg">
+								<template #desc>
+									<div style="margin-top: .1rem;">100元 ×1</div>
+									<div>订单金额: ￥96</div>
+									<div>订单编号: 2098867739808689066088</div>
+									<div>下单时间: 2021-11-2012:18</div>
+								</template>
+							</van-card>
+							<div class="tips">
+								<div>到账时间: 预计<span style="color: #F72912;">5小时</span>后到账</div>
+							</div>
+							<div style="height: 1rem;border-top: 1px solid #F3F4F5;background-color: #fff;"></div>
+						</div> -->
+					</van-pull-refresh>
+				</div>
+			</main>
+		</div>
+		<script>
+			new Vue({
+				el: '#app',
+				data() {
+					return {
+						query: {
+							page: 0,
+							limit: 10
+						},
+						list: [],
+						total: 0,
+						finished: false,
+						loading: false,
+					}
+				},
+				mounted() {
+					this.getOrderList()
+				},
+				methods: {
+					// todo目前没有数据 等待数据对接
+					async getOrderList() {
+						if (this.list.length == this.total && this.total) {
+							this.loading = false;
+							this.finished = true;
+							return;
+						}
+						this.query.page++;
+						let url =
+							axiosBaseUrl + `/api/v1/order/myOrder?page=${this.query.page}&size=${this.query.limit}`
+						let res = await axios.post(url, {
+							openid: localStorage.getItem(window.location.host+'openid')?localStorage.getItem(window.location.host+'openid'):''
+						}, {
+							headers: {
+								"authentication": `${localStorage.getItem("token")}`
+							}
+						});
+						if (res.status === 200 && res.data.code === 200) {
+							let data = res.data.data;
+							const response = JSON.parse(decrypt(data.data, data.key)).info;
+							console.log(response)
+							this.total = response.total;
+							this.list = [...this.list, ...response.data];
+							//判断消息是否加载完毕
+							this.loading = false;
+						}
+					},
+					onRefresh() {
+						this.getOrderList();
+					}
+				}
+			});
+		</script>
+	</body>
+</html>

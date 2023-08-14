@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	<head>
+		<meta charset="UTF-8">
+		
+		<meta name="viewport"
+			content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<title>支付成功</title>
+		<link rel="stylesheet" href="https://kaishen.oss-cn-beijing.aliyuncs.com/gong/static/css/app.294a59d7.css">
+		<link rel="stylesheet" href="https://kaishen.oss-cn-beijing.aliyuncs.com/gong/static/css/p20.38683d08.css">
+		<script src="https://kaishen.oss-cn-beijing.aliyuncs.com/gong/static/js/jweixin-1.6.0.js"></script>
+		<!-- 引入样式文件 -->
+		<link rel="stylesheet" href="https://kaishen.oss-cn-beijing.aliyuncs.com/gong/static/vant/index.css" />
+		<!-- 引入 Vue 和 Vant 的 JS 文件 -->
+		<script src="https://kaishen.oss-cn-beijing.aliyuncs.com/gong/static/vue/vue.min.js"></script>
+		<script src="https://kaishen.oss-cn-beijing.aliyuncs.com/gong/static/vant/vant.min.js"></script>
+		<script src="https://kaishen.oss-cn-beijing.aliyuncs.com/gong/static/vue/axios.min.js"></script>
+		<script src="https://kaishen.oss-cn-beijing.aliyuncs.com/gong/static/js/CryptoJS.min.js"></script>
+		<script src="https://kaishen.oss-cn-beijing.aliyuncs.com/gong/static/js/app.js"></script>
+		<!--引入less.min.js文件 -->
+		<link rel="stylesheet/less" href="../static/css/views/refund.less">
+		<script src="https://kaishen.oss-cn-beijing.aliyuncs.com/gong/static/js/less.3.8.1.min.js"></script>
+		<meta name="referrer" content="always">
+		<meta name="head:count" content="2">
+	</head>
+
+	<body>
+		<div id="app">
+			<main class="container">
+				<!-- 温馨提示 -->
+				<div class="header">
+					<div>温馨提示:</div>
+					<div>您将进行好省汇话费礼包退款流程，退款成功后，您的(200.00元话费礼包)、(好省汇会员特权)等将会失效!</div>
+				</div>
+				<!-- 商品信息 -->
+				<div class="main">
+					<div class="main-title">退款商品</div>
+					<div class="main-content">
+						<span>售后电话: {{configInfo.shouhuo_tel}}</span>
+						<span>￥{{orderInfo.huafei}}</span>
+					</div>
+					<div class="main-footer">
+						<span>实付</span>
+						<span>￥{{orderInfo.pay_amount}}</span>
+						<span>(免运费)</span>
+					</div>
+				</div>
+				<div class="main">
+					<div class="main-title">退款信息</div>
+					<div class="main-content">
+						<span><small style="color: #F72912;font-weight: bold;margin-right: .1rem;">*</small>退款金额</span>
+						<span style="font-size: .38rem;color: #F72912;font-weight: bold;">￥{{orderInfo.pay_amount}}</span>
+					</div>
+					<div class="main-content">
+						<span><small style="color: #F72912;font-weight: bold;margin-right: .1rem;">*</small>申请原因</span>
+						<span @click="selectReason" style="display: flex;align-items: center;">
+							<span style="font-weight: normal;cursor: pointer;">{{reason}}</span>
+							<van-icon name="arrow" />
+						</span>
+					</div>
+				</div>
+				<div class="main" style="padding: .2rem .3rem;">
+					<div class="main-content" style="margin: 0;">
+						<span><small style="color: #F72912;font-weight: bold;margin-right: .1rem;">*</small>手机号</span>
+						<span style="color: #000;">{{orderInfo.phone}}</span>
+					</div>
+				</div>
+				<div class="btn" @click="submit">提交申请</div>
+			</main>
+
+			<!-- 选择原因 -->
+			<van-action-sheet v-model="show" title="申请原因">
+				<div class="content">
+					<van-radio-group v-model="form.reason">
+						<van-radio :name="item" v-for="(item, index) in reasonArr" :key="index" checked-color="#ff894f"
+							icon-size="16px">{{item}}</van-radio>
+					</van-radio-group>
+					<div class="footer" @click="reasonChange">确定</div>
+				</div>
+			</van-action-sheet>
+
+		</div>
+		<script>
+			new Vue({
+				el: '#app',
+				data() {
+					return {
+						reason: '点击选择申请原因',
+						form: {
+							reason: '',
+						},
+						reasonArr: [],
+						show: false,
+						configInfo: {},
+						id:"",
+						orderInfo:{}
+					}
+				},
+				methods: {
+					// 选择原因
+					selectReason() {
+						this.show = true;
+					},
+					// 获取退款原因
+					async getReason() {
+						let res = await axios.post(axiosBaseUrl + '/api/v1/help/tuikuanYuanyin', {
+							data: this.form
+						});
+						if (res.status === 200 && res.data.code === 200) {
+							let data = res.data.data;
+							const response = JSON.parse(decrypt(data.data, data.key)).info;
+							this.reasonArr = response;
+						}
+					},
+					// 选中原因
+					reasonChange() {
+						this.reason = this.form.reason;
+						this.show = false;
+					},
+					// 提交申请
+					async submit() {
+						if(!this.form.reason){
+							vant.Toast("请输入退款原因")
+							return false
+						}
+						if(!this.id){
+							return false
+						}
+						let res = await axios.post(axiosBaseUrl + `/api/v1/packorder/tuiPackorder?oid=${this.id}&tui_yuanyin=${this.form.reason}`);
+						if (res.status === 200 && res.data.code === 200) {
+							window.location.href = `./refundsuccess.html?id=${this.id}`
+						}else{
+							vant.Toast(res.data.message)
+						}
+					},
+					// 获取配置售后电话
+					async getGloablSet() {
+						let res = await axios.post(axiosBaseUrl + '/api/v1/help/getGloablSet');
+						if (res.status === 200 && res.data.code === 200) {
+							let data = res.data.data;
+							const response = JSON.parse(decrypt(data.data, data.key)).info;
+							this.configInfo = response;
+						}else{
+							vant.Toast(res.data.message)
+						}
+					},
+					
+					// 获取订单信息
+					async getOrderInfo() {
+						if(!this.id){
+							return false
+						}
+						let res = await axios.post(axiosBaseUrl + `/api/v1/packorder/getTuiPackrder?oid=${this.id}`);
+						if (res.status === 200 && res.data.code === 200) {
+							let data = res.data.data;
+							const response = JSON.parse(decrypt(data.data, data.key)).info;
+							this.orderInfo = response;
+						}else{
+							vant.Toast(res.data.message)
+						}
+					},
+					
+				},
+				mounted() {
+					this.id = getQueryVariable('id')
+					this.getOrderInfo()
+					this.getGloablSet()
+					this.getReason();
+				}
+			});
+		</script>
+	</body>
+</html>

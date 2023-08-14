@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	<head>
+		<meta charset="UTF-8">
+		
+		<meta name="viewport"
+			content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<title>百元话费券限时抢</title>
+		<link rel="stylesheet" href="https://kaishen.oss-cn-beijing.aliyuncs.com/gong/static/css/app.294a59d7.css">
+		<link rel="stylesheet" href="https://kaishen.oss-cn-beijing.aliyuncs.com/gong/static/css/p20.38683d08.css">
+
+		<!-- 引入样式文件 -->
+		<link rel="stylesheet" href="https://kaishen.oss-cn-beijing.aliyuncs.com/gong/static/vant/index.css" />
+		<!-- 引入 Vue 和 Vant 的 JS 文件 -->
+		<script src="https://kaishen.oss-cn-beijing.aliyuncs.com/gong/static/vue/vue.min.js"></script>
+		<script src="https://kaishen.oss-cn-beijing.aliyuncs.com/gong/static/vant/vant.min.js"></script>
+		<script src="https://kaishen.oss-cn-beijing.aliyuncs.com/gong/static/vue/axios.min.js"></script>
+		<script src="https://kaishen.oss-cn-beijing.aliyuncs.com/gong/static/js/CryptoJS.min.js"></script>
+		<script src="https://kaishen.oss-cn-beijing.aliyuncs.com/gong/static/js/app.js"></script>
+		<link rel="stylesheet/less" href="../static/css/views/middePage.less">
+		<script src="https://kaishen.oss-cn-beijing.aliyuncs.com/gong/static/js/less.3.8.1.min.js"></script>
+
+		<meta name="referrer" content="always">
+		<meta name="head:count" content="2">
+	</head>
+	<body>
+		<div id="app">
+			<!-- 挽留弹窗 -->
+			<div class="fan-overlay"></div>
+			<transition name="van-fade">
+				<div v-show="countDownPopup" class="fan-popup fan-popup--center safe">
+					<div class="hongbao-popup">
+						<p class="hongbao-popup_title">100元话费券</p>
+						<p class="hongbao-popup_name">话费券</p>
+						<div class="fan-bg-container fan2-text">
+							<div class="fan2-text__inner">
+								<span user-select="" selectable="" space="nbsp" class="fan2-text__span" style="vertical-align: baseline;">
+									有效期：2023-02-07 00:00:00 - 2024-02-07 00:00:00
+								</span>
+							</div>
+						</div>
+						<button class="fan-btn fan-btn--bold" @click="close" hover-class="none" style="width: 5.6rem; height: 1.2rem; --fan-btn-bg:#1976FF; --fan-btn-text-color:#fff; font-size: 0.4rem; font-weight: 400; --fan-btn-border-radius:var(--fan-radius-max);">
+							<div class="fan-btn__in fan-btn--inone">立即领取使用</div>
+						</button>
+					</div>
+					<div class="fan-aspect-ratio" @click="close">
+						<img class="fan-img" src="https://kaishen.oss-cn-beijing.aliyuncs.com/gong/static/image/c1b31f6021592b90958e6e01ccbe7648.png" alt="" style="height: 100%;">
+					</div>
+				</div>
+			</transition>
+		</div>
+
+	</body>
+	<script>
+		new Vue({
+			el: '#app',
+			data() {
+				return {
+					countDownPopup: true
+				}
+			},
+			methods: {
+				// 关闭弹窗
+				close() {
+					window.location.href = './index.html';
+				}
+			},
+			mounted() {
+
+			}
+		});
+	</script>
+</html>

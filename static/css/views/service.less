@@ -1,0 +1,74 @@
+#app {
+	width: 100%;
+	min-height: 100vh;
+	background-color: #FAFAFA;
+}
+.collapse {
+	margin: .3rem;
+	background-color: #fff;
+	border-radius: .2rem;
+	overflow: hidden;
+	.collapse-title {
+		position: relative;
+		padding: .3rem .4rem .5rem;
+		display: flex;
+		align-items: center;
+		&::after {
+			content: "";
+			position: absolute;
+			left: .2rem;
+			width: .08rem;
+			height: .26rem;
+			background-color: #2678FF;
+			border-radius: .1rem;
+		}
+	}
+}
+.aside {
+	position: fixed;
+	right: 0;
+	left: auto;
+	top: 50%;
+	.asbtn {
+		border-radius: .3rem 0 0 .3rem;
+		background-color: #F7931E;
+		color: #fff;
+		padding: .1rem .1rem .1rem 0.22rem;
+	}
+}
+
+.popup {
+	width: 6.4rem;
+	border-radius: .3rem;
+	padding: .3rem;
+	div {
+		text-align: center;
+	}
+	.form {
+		.input {
+			border: 1px solid #2577DB;
+			border-radius: .3rem;
+			margin-top: .2rem;
+		}
+	}
+}
+.btn {
+	background-color: #2746EF;
+	color: #fff;
+	margin: .3rem auto;
+	line-height: .8rem;
+	text-align: center;
+	border-radius: .5rem;
+	font-size: .30rem;
+	cursor: pointer;
+}
+.tips {
+	font-size: .24rem;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: .2rem 0;
+	a {
+		color: #F24220;
+	}
+}

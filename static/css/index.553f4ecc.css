@@ -1,0 +1,97 @@
+.van-checkbox-group--horizontal {
+	display: flex;
+	flex-wrap: wrap
+}
+
+:root {
+	--van-checkbox-size: 20px;
+	--van-checkbox-border-color: var(--van-gray-5);
+	--van-checkbox-transition-duration: var(--van-animation-duration-fast);
+	--van-checkbox-label-margin: var(--van-padding-xs);
+	--van-checkbox-label-color: var(--van-text-color);
+	--van-checkbox-checked-icon-color: var(--van-primary-color);
+	--van-checkbox-disabled-icon-color: var(--van-gray-5);
+	--van-checkbox-disabled-label-color: var(--van-text-color-3);
+	--van-checkbox-disabled-background-color: var(--van-border-color)
+}
+
+.van-checkbox {
+	align-items: center;
+	cursor: pointer;
+	display: flex;
+	overflow: hidden;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	user-select: none
+}
+
+.van-checkbox--disabled {
+	cursor: not-allowed
+}
+
+.van-checkbox--label-disabled {
+	cursor: default
+}
+
+.van-checkbox--horizontal {
+	margin-right: var(--van-padding-sm)
+}
+
+.van-checkbox__icon {
+	cursor: pointer;
+	flex: none;
+	font-size: var(--van-checkbox-size);
+	height: 1em;
+	line-height: 1em
+}
+
+.van-checkbox__icon .van-icon {
+	border: 1px solid var(--van-checkbox-border-color);
+	box-sizing: border-box;
+	color: transparent;
+	display: block;
+	font-size: .8em;
+	height: 1.25em;
+	line-height: 1.25;
+	text-align: center;
+	transition-duration: var(--van-checkbox-transition-duration);
+	transition-property: color, border-color, background-color;
+	width: 1.25em
+}
+
+.van-checkbox__icon--round .van-icon {
+	border-radius: 100%
+}
+
+.van-checkbox__icon--checked .van-icon {
+	background-color: var(--van-checkbox-checked-icon-color);
+	border-color: var(--van-checkbox-checked-icon-color);
+	color: var(--van-white)
+}
+
+.van-checkbox__icon--disabled {
+	cursor: not-allowed
+}
+
+.van-checkbox__icon--disabled .van-icon {
+	background-color: var(--van-checkbox-disabled-background-color);
+	border-color: var(--van-checkbox-disabled-icon-color)
+}
+
+.van-checkbox__icon--disabled.van-checkbox__icon--checked .van-icon {
+	color: var(--van-checkbox-disabled-icon-color)
+}
+
+.van-checkbox__label {
+	color: var(--van-checkbox-label-color);
+	line-height: var(--van-checkbox-size);
+	margin-left: var(--van-checkbox-label-margin)
+}
+
+.van-checkbox__label--left {
+	margin: 0 var(--van-checkbox-label-margin) 0 0
+}
+
+.van-checkbox__label--disabled {
+	color: var(--van-checkbox-disabled-label-color)
+}

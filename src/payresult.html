@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	<head>
+		<meta charset="UTF-8">
+
+		<meta name="viewport"
+			content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<title>支付成功</title>
+		<link rel="stylesheet" href="https://kaishen.oss-cn-beijing.aliyuncs.com/gong/static/css/app.294a59d7.css">
+		<link rel="stylesheet" href="https://kaishen.oss-cn-beijing.aliyuncs.com/gong/static/css/p20.38683d08.css">
+		<!-- 引入样式文件 -->
+		<link rel="stylesheet" href="https://kaishen.oss-cn-beijing.aliyuncs.com/gong/static/vant/index.css" />
+		<!-- 引入 Vue 和 Vant 的 JS 文件 -->
+		<script src="https://kaishen.oss-cn-beijing.aliyuncs.com/gong/static/vue/vue.min.js"></script>
+		<script src="https://kaishen.oss-cn-beijing.aliyuncs.com/gong/static/vant/vant.min.js"></script>
+		<script src="https://kaishen.oss-cn-beijing.aliyuncs.com/gong/static/vue/axios.min.js"></script>
+		<script src="https://kaishen.oss-cn-beijing.aliyuncs.com/gong/static/js/CryptoJS.min.js"></script>
+		<script src="https://kaishen.oss-cn-beijing.aliyuncs.com/gong/static/js/app.js"></script>
+		<!-- <script src="https://kaishen.oss-cn-beijing.aliyuncs.com/gong/static/js/jquery-3.6.3.min.js"></script> -->
+		<!--引入less.min.js文件 -->
+		<link rel="stylesheet/less" href="../static/css/views/success.less">
+		<script src="https://kaishen.oss-cn-beijing.aliyuncs.com/gong/static/js/less.3.8.1.min.js"></script>
+		<script type="text/javascript" charset="UTF-8" src="https://wx.gtimg.com/pay_h5/goldplan/js/jgoldplan-1.0.0.js">
+		</script>
+		<style>
+			.header-icon {
+				margin-top: 20px;
+				font-size: 32px;
+			}
+
+			.header-orderNo {
+				margin-top: 20px;
+				font-size: 16px;
+			}
+
+			.btn {
+				margin: 30px auto 10px;
+				text-align: center;
+			}
+
+			.btn span {
+				display: inline-block;
+				width: 200px;
+				height: 38px;
+				line-height: 38px;
+				border-radius: 20px;
+				background: #EB6E81;
+				background-image: linear-gradient(to right, #EC8A56 , #EB5EA0);
+				color: #fff;
+				font-size: 14px;
+				cursor: pointer;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="app">
+			<main class="container">
+				<!-- 头部信息 -->
+				<div class="main">
+					<div class="header">
+						<div class="header-icon">支付成功</div>
+						<div class="header-orderNo">支付金额： <span id="price"></span>元</div>
+						<div style="font-size: 14px;color: #666;margin-top: 6px;">订单编号： <span id="orderno"></span></div>
+					</div>
+					<div class="btn">
+						<span id="toOrder">查看订单</span>
+					</div>
+				</div>
+			</main>
+		</div>
+
+		<script src="https://kaishen.oss-cn-beijing.aliyuncs.com/gong/static/js/jquery-3.6.3.min.js"></script>
+		<script>
+			// 加载商家小票
+			var initData = {
+				action: 'onIframeReady',
+				displayStyle: 'SHOW_CUSTOM_PAGE',
+			}
+			var initPostData = JSON.stringify(initData)
+			parent.postMessage(initPostData, "https://payapp.weixin.qq.com")
+
+			// 解决进入商家小票 html的font-size = 0的问题(商家小票无法动态获取屏幕宽)，请勿随意改动
+			document.querySelector('html').style.fontSize = "14px";
+
+			// 获取返回页面参数
+			function getshangjiaxinxi(name) {
+				let querys = window.location.search.substring(1);
+				let admins = querys.split("&");
+				for (let i = 0; i < admins.length; i++) {
+					let hasddf = admins[i].split("=");
+					if (hasddf[0] == name) {
+						return hasddf[1];
+					}
+				}
+				return null;
+			}
+
+			//获取参数
+			let sub_mch_id = getshangjiaxinxi("sub_mch_id"); //特约商户号
+			// console.log("sub_mch_id == ", sub_mch_id)
+			let out_trade_no = getshangjiaxinxi("out_trade_no"); //商户订单号
+			// console.log("out_trade_no == ", out_trade_no)
+			let check_code = getshangjiaxinxi("check_code"); //md5 校验码
+			// console.log("check_code == ", check_code)
+
+			let dataObj = {};
+			$.get("/api/v1/payym/payreseult", {
+					sub_mch_id: sub_mch_id,
+					out_trade_no: out_trade_no,
+					check_code: check_code
+				},
+				function(res, status) {
+					let data = JSON.parse(res).data;
+					const response = JSON.parse(decrypt(data.data, data.key)).info;
+					dataObj = response;
+					console.log(dataObj)
+					$('#price').html(response.price);
+					$('#orderno').html(response.orderno);
+					if(response.openid) {
+						localStorage.setItem(window.location.host+'openid', response.openid);
+					}
+					localStorage.setItem("oid", response.id);
+					localStorage.setItem("phone", response.phone);
+					
+			});
+			
+			//注册点击事件(去详情)
+			document.querySelector('#toOrder').onclick = function () {
+				
+				let url = '';
+				if (dataObj.molds == 'packorder') {
+					// 券包订单
+					url = window.location.origin + '/src/success.html?oid=' + dataObj.id + '&phone=' + dataObj.phone; // 外跳链接
+				} else if (dataObj.molds == 'order') {
+					// 充值订单
+					url = window.location.origin + '/src/order.html'; // 外跳链接
+				} else if (dataObj.molds == 'elmorder') {
+					// 饿了么
+					url = window.location.origin + '/src/success.html?oid=' + dataObj.id + '&phone=' + dataObj.phone
+				} else {}
+				
+				
+				var mchData = {
+					action: 'jumpOut',
+					jumpOutUrl: url
+				}
+				var postData = JSON.stringify(mchData)
+				parent.postMessage(postData, "https://payapp.weixin.qq.com")
+			}
+		</script>
+	</body>
+</html>

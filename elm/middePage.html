@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	<head>
+		<meta charset="UTF-8">
+
+		<meta name="viewport"
+			content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<title>百元话费券限时抢</title>
+		<link rel="stylesheet" href="../static/css/app.294a59d7.css">
+		<link rel="stylesheet" href="../static/css/p20.38683d08.css">
+
+		<!-- 引入样式文件 -->
+		<link rel="stylesheet" href="../static/vant/index.css" />
+		<!-- 引入 Vue 和 Vant 的 JS 文件 -->
+		<script src="../static/vue/vue.min.js"></script>
+		<script src="../static/vant/vant.min.js"></script>
+		<script src="../static/vue/axios.min.js"></script>
+		<script src="../static/js/CryptoJS.min.js"></script>
+		<script src="../static/js/app.js"></script>
+		<link rel="stylesheet/less" href="../static/css/views/middePage.less">
+		<script src="../static/js/less.3.8.1.min.js"></script>
+
+		<meta name="referrer" content="always">
+		<meta name="head:count" content="2">
+	</head>
+	<body>
+		<div id="app">
+			<!-- 挽留弹窗 -->
+			<div class="fan-overlay"></div>
+			<transition name="van-fade">
+				<div v-show="countDownPopup" class="fan-popup fan-popup--center safe">
+					<div class="hongbao-popup">
+						<p class="hongbao-popup_title">饿了么终身会员</p>
+						<p class="hongbao-popup_name">饿了么终身免费续会员资格</p>
+						<div class="fan-bg-container fan2-text">
+							<div class="fan2-text__inner">
+								<span user-select="" selectable="" space="nbsp" class="fan2-text__span"
+									style="vertical-align: baseline;">
+									有效期：{{startTime | dataFormat}} - {{endTime | dataFormat}}
+								</span>
+							</div>
+						</div>
+						<button class="fan-btn fan-btn--bold" @click="close" hover-class="none"
+							style="width: 5.6rem; height: 1.2rem; --fan-btn-bg:#1976FF; --fan-btn-text-color:#fff; font-size: 0.4rem; font-weight: 400; --fan-btn-border-radius:var(--fan-radius-max);">
+							<div class="fan-btn__in fan-btn--inone">立即领取使用</div>
+						</button>
+					</div>
+					<div class="fan-aspect-ratio" @click="close">
+						<img class="fan-img" src="../static/image/c1b31f6021592b90958e6e01ccbe7648.png" alt=""
+							style="height: 100%;">
+					</div>
+				</div>
+			</transition>
+		</div>
+
+	</body>
+	<script>
+		// 定义一个全局过滤器
+		Vue.filter('dataFormat', function(input, pattern = '') {
+			var dt = new Date(input);
+			// 获取年月日
+			var y = dt.getFullYear();
+			var m = (dt.getMonth() + 1).toString().padStart(2, '0');
+			var d = dt.getDate().toString().padStart(2, '0');
+			// 如果 传递进来的字符串类型，转为小写之后，等于 yyyy-mm-dd，那么就返回 年-月-日
+			// 否则，就返回  年-月-日 时：分：秒
+			if (pattern.toLowerCase() === 'yyyy-mm-dd') {
+				return `${y}-${m}-${d}`;
+			} else {
+				// 获取时分秒
+				var hh = dt.getHours().toString().padStart(2, '0');
+				var mm = dt.getMinutes().toString().padStart(2, '0');
+				var ss = dt.getSeconds().toString().padStart(2, '0');
+				return `${y}-${m}-${d} ${hh}:${mm}:${ss}`;
+			}
+		});
+
+		new Vue({
+			el: '#app',
+			data() {
+				return {
+					countDownPopup: true,
+					startTime: new Date().getTime(),
+					endTime: new Date().getTime() + 30 * 60 * 1000,
+				}
+			},
+			methods: {
+				// 关闭弹窗
+				close() {
+					window.location.href = './index.html';
+				}
+			},
+			mounted() {
+
+			}
+		});
+	</script>
+</html>

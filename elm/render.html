@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	<head>
+		<meta charset="UTF-8">
+
+		<meta name="viewport"
+			content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<title>快省卡</title>
+		<link rel="stylesheet" href="../static/css/app.294a59d7.css">
+		<link rel="stylesheet" href="../static/css/p20.38683d08.css">
+		<script src="../static/js/jweixin-1.6.0.js"></script>
+		<!-- 引入样式文件 -->
+		<link rel="stylesheet" href="../static/vant/index.css" />
+		<link rel="stylesheet" href="../static/css/views/index.css">
+		<link rel="stylesheet" href="../static/css/views/render.css" />
+		<!-- 引入 Vue 和 Vant 的 JS 文件 -->
+		<script src="../static/vue/vue.min.js"></script>
+		<script src="../static/vant/vant.min.js"></script>
+		<script src="../static/vue/axios.min.js"></script>
+		<script src="../static/js/CryptoJS.min.js"></script>
+		<script src="../static/js/app.js"></script>
+		<script>(function() {var _53code = document.createElement("script");_53code.src = "https://tb.53kf.com/code/code/4a4b7cf22647965ddefd94e12549b2ec0/1";var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(_53code, s);})();</script>
+		<!--引入less.min.js文件 -->
+		<script src="../static/js/less.3.8.1.min.js"></script>
+		<meta name="referrer" content="always">
+		<meta name="head:count" content="2">
+		<style>
+			#mobile_icon_div div:nth-child(1) {
+				display: flex !important;
+				flex-direction: column !important;
+				justify-content: flex-end !important;
+				position: fixed !important;
+				right: 0 !important;
+				top: 2.58rem !important;
+				width: 0.64rem !important;
+				background: none !important;
+				border: 0 !important;
+				left: auto !important;
+				border-radius: 0.3rem 0 0 0.3rem !important;
+				padding: 0 !important;
+				background-image: url(../static/image/render/zaixiankefu.png) !important;
+				background-size: 100% !important;
+				height: 1.9rem !important;
+			}
+			#mobile_icon_div div:nth-child(1)::after {
+				position: absolute;
+				content: "";
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="app">
+			<main class="container">
+				<div id="app">
+					<div class="popup router-view">
+						<div class="logo">
+							<img src="../static/image/logo.png" alt="">
+							<span>快省卡</span>
+						</div>
+						<div class="coupon-rule">
+							<a href="#" class="" @click="ruleShow=true">
+								<img class="coupon-rule-img" src="../static/image/render/huodongguizhe.png">
+							</a>
+						</div>
+						<div class="contact-customer">
+							<span>
+								<img class="contact-customer-img" src="../static/image/render/zaixiankefu.png">
+							</span>
+						</div>
+						<!-- <div class="download-app">
+							<a href="https://img01.zhiqd.cn/admin/media/20221109112538_f381c704.apk">
+								<img class="download-app-img" src="../static/image/render/xiazaiapp.png">
+							</a>
+						</div> -->
+						<div class="popup-content">
+							<img src="">
+							<div class="popup-content-info">
+								<div class="popup-content-mobile">
+									<input placeholder="请输入您的手机号码" v-model="form.phone" type="number"
+										style="background-color: rgb(248, 248, 248);">
+								</div>
+								<div>
+									<img class="submit-button" src="../static/image/render/showwin-submit.png" @click="submit">
+								</div>
+								<div class="agreement">
+									<!-- <div class="tips"> -->
+										<van-checkbox v-model="form.checked" icon-size="18px">
+											我已阅读并同意
+											<a href="./privacy.html" style="color: #F24220;">《隐私条款》</a>
+											及
+											<a href="./agreement.html" style="color: #F24220;">《服务协议》</a>
+										</van-checkbox>
+									<!-- </div> -->
+								</div>
+							</div>
+						</div>
+						<div class="last-info">
+							<img src="../static/image/render/phoneXqhd_bg_2.png">
+						</div>
+						<section class="section" style="text-align:center;background:none;padding-top: 10px;">
+							<p style="color:#999;">
+								<small>页面由上海品棒科技中心有限公司提供技术支持</small>
+							</p>
+							<p style="color:#999;">
+								<small>沪ICP备2021011302号-1</small>
+							</p>
+							<p style="color:#999;">
+								<small>客服电话：
+									<a class="tel" :href="configInfo.shouhuo_tel">{{configInfo.shouhuo_tel}}</a>
+								</small>
+							</p>
+						</section>
+					</div>
+				</div>
+				<!-- 规则弹窗 -->
+				<div class="van-overlay" v-show="ruleShow"></div>
+				<transition name="van-fade">
+					<div class="van-popup van-popup--center" style="z-index: 2008; background: none;" v-show="ruleShow">
+						<div>
+							<div style="text-align: right; margin-bottom: 16px;">
+								<i class="van-badge__wrapper van-icon" style="font-size: 0.62rem;"
+									@click="closeRuleHandle">
+									<img class="van-icon__image"
+										src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAD4AAAA+CAMAAABEH1h2AAAAn1BMVEUAAACDg4OGhoaFhYWFhYWGhoaEhISGhoaGhoaGhoaGhoaGhoaFhYV+fn6GhoaGhoaFhYWGhoaGhoaFhYWEhISFhYWEhISGhoaGhoaFhYWFhYWFhYWGhoaGhoaFhYWGhoaFhYWGhoaEhIRkZGSGhoZycnLn5+f///9ra2va2tp/f397e3tnZ2d3d3d0dHSEhISCgoJubm5paWnj4+Nvb29KvY/rAAAAI3RSTlMABvvuSM829efiyXx1CvHem9rURBg+IZGHbleoppQpqmROJnc1vOEAAAJUSURBVEjHpdfpdqJAEAXgFlxB3DUxRrPUxbSsirz/s42ZzAynKShluD895zu9SHdXqZqsPtxdbzixrMmw9+p+rFSDrGcjlDKarR+z3vjbpmGSZ1FEFEU6T8IUwGjs3cUd1wbOsaZSdHwGbLcj6+4UCC5UmUsATLvS0LMb1lQbHQCz2gkcFkh9EuOnWBxq9nuCIKI7yQJM1pXLHiCkBxJi0K3QFmJ6KDEs5vsDJPRgEgz6pv602dji+PbG+Md6fN3y+nsdVWSGgBolwL7QS6RZM56lWP6b+hw+NYyP+d/pj4WpC9Mf/2hvCN2cawx/ht+Wdv10rVyKPl1Lw29/8znME3r9OvpV+svkFyy+dR/n0q4cb55r9uMZ/Rt/QkzVXtYU4+nGp8io2suaNKZKrYq5c8+1OfuVekFIghc0hXhRz0hI8IKmBM/qDTkJXtCU4031oEnwgiaNnhohIsELmiKMlG1w5g3NuK0sEAle0ESwRK5Pd7mNSNDHozx5Y+u49v2jvHUOMkETCV7DUTvkkpZ8jp3x0XJtev7RGkeGaebZkSkOLNfM8wNbXBdcy15jblxWTDPPL6viquSae35Vqmnpoi606dlFPa18o67Vz4R/PVa+Up6NCzXOBbbX/ols/0Cr7n+VB62Kk5kq4i1alUbqMGlYmH2WCtqGZWG7orRVSbxUFenbCLIHCnK7ryqzcZAmsk5SOJvaZmTPOhnWzeylbmi5kFuhxfJOI7Yd1jdiw23nfif37vxpA7XZBjrvBRazcR0LRizH3agG8brua9ECd+vaz1/bSqGei1jtKAAAAABJRU5ErkJggg==">
+								</i>
+							</div>
+							<img class="rpopbar" src="../static/image/render/68c69a153c12bd7d0fe6001c37b77632.png" alt="">
+							<div class="rpop">
+								<div>
+									<div class="flex items-center justify-center rpoptitle">参与说明</div>
+									<div>
+										<div>以下权益均在成为甄选好省会员后享有，均在甄选好省中使用:</div>
+										<div>1、费用说明:会员费用29.9元，一次办理，有效期为终身，激活巨好省会员后即可享用会员权益。</div>
+										<div>2、活动说明:“0元抢购手机”权益为甄选好省 中“0元购活动”，成为会员后，即可参与，每款商品皆可参与，中奖概率为 1/99999999。</div>
+										<div>3、秒杀流程;成为甄选好省会员后，下载甄选好省APP，即可参与抢购活动，活动商品不定时更新，更有精彩活动等你参与。</div>
+										<div>4、办理说明:用户需主动支付会员费29.9元，成功支付后，请下载甄选好省，使用购买时的会员</div>
+										<div>5、如有疑问请拨打客服电话{{configInfo.shouhuo_tel}}。</div>
+										<div>注：本活动最终解释权归官方所有</div></div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</transition>
+			</main>
+		</div>
+		<script>
+			new Vue({
+				el: '#app',
+				data() {
+					return {
+						form: {
+							checked: true,
+							phone: ''
+						},
+						configInfo: {},
+						// 活动规则弹窗开关
+						ruleShow: false,
+						ruleArr: [],
+						query: {}
+					}
+				},
+				mounted() {
+					// this.getRule();
+					this.getGloablSet();
+					this.query = {
+						phone: getQueryVariable('phone'),
+						nadkey: getQueryVariable('nadkey'),
+						unid: getQueryVariable('unid'),
+						bxm_id: getQueryVariable('bxm_id')
+					}
+					if(this.query.form) {
+						this.form.phone = this.query.form;
+					}
+				},
+				methods: {
+					// 获取规则
+					async getRule() {
+						let res = await axios.post(axiosBaseUrl + '/api/v1/help/guizhe');
+						if (res.status === 200 && res.data.code === 200) {
+							let data = res.data.data;
+							const response = JSON.parse(decrypt(data.data, data.key)).info;
+							this.ruleArr = response;
+						}
+					},
+					// 获取配置售后电话
+					async getGloablSet() {
+						let res = await axios.post(axiosBaseUrl + '/api/v1/help/getGloablSet');
+						if (res.status === 200 && res.data.code === 200) {
+							let data = res.data.data;
+							const response = JSON.parse(decrypt(data.data, data.key)).info;
+							this.configInfo = response;
+						}
+					},
+					// 关闭活动规则弹窗
+					closeRuleHandle() {
+						this.ruleShow = false;
+					},
+					submit() {
+						if(!this.form.phone) {
+							vant.Toast('请输入手机号');
+							return false;
+						}
+						var re = /^1[3,4,5,6,7,8,9][0-9]{9}$/;
+						var result = re.test(this.form.phone);
+						if (!result) {
+							vant.Toast('请输入正确的手机号');
+							return false;
+						}
+						if (!this.form.checked) {
+							vant.Toast('请阅读并同意隐私条款及服务协议');
+							return false;
+						}
+						window.location.href = './index.html?phone=' + this.form.phone +'&nadkey='+this.query.nadkey+'&bxm_id='+this.query.bxm_id+'&unid='+this.query.unid;
+					}
+				}
+			});
+		</script>
+	</body>
+</html>

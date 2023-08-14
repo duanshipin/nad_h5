@@ -1,0 +1,171 @@
+#app {
+	width: 100%;
+	min-height: 100vh;
+	background-color: #F6F6F6;
+}
+.header {
+	text-align: center;
+	padding: .5rem 0;
+	.header-icon {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		div {
+			display: inline-block;
+			font-size: .38rem;
+			margin-left: .1rem;
+			font-weight: bold;
+		}
+	}
+	.header-orderNo {
+		color: #666;
+		padding-top: .2rem;
+	}
+}
+.notice {
+	width: 92%;
+	margin: 0 auto;
+	padding: .3rem;
+	background: linear-gradient(#FEDDD8,#fff);
+	border-radius: .3rem;
+	.notice-title {
+		width: 100%;
+		text-align: center;
+		font-size: .42rem;
+		color: #F52C1E;
+		font-weight: 600;
+	}
+	.notice-info {
+		width: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: .3rem 0 .1rem;
+		color: #666;
+		span {
+			margin-left: .1rem;
+		}
+	}
+	.notice-icon {
+		img {
+			width: .6rem;
+			display: block;
+			margin: 0 auto .1rem;
+		}
+	}
+	
+	.notice-content {
+		width: 100%;
+		border: 1px solid red;
+		padding: .2rem;
+		background-color: #fff;
+		border: 1px dashed #ccc;
+		border-radius: .1rem;
+		div:last-of-type {
+			text-indent: 1em;
+			color: #555;
+		}
+	}
+	.notice-tips {
+		width: 100%;
+		text-align: center;
+		padding-top: .2rem;
+		color: #555;
+	}
+}
+
+.voucher {
+	position: relative;
+	width: 92%;
+	margin: .3rem auto;
+	padding: .3rem 0 0;
+	background: #fff;
+	.voucher-title {
+		position: absolute;
+		width: 2.8rem;
+		background-color: #FFEDE9;
+		text-align: center;
+		padding: .14rem 0;
+		top: 0;
+		left: 50%;
+		transform: translateX(-50%);
+		border-bottom-left-radius: .4rem;
+		border-bottom-right-radius: .4rem;
+		color: #F52C1E;
+		font-weight: 600;
+		font-size: .32rem;
+	}
+	.voucher-main {
+		padding: .6rem 0 .3rem;
+		overflow: hidden;
+		.voucher-main-tj {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			padding: 0 .3rem;
+			.voucher-price {
+				font-size: .30rem;
+				font-weight: 600;
+				span {
+					color: #F52C1E;
+				}
+			}
+			.voucher-total {
+				position: absolute;
+				background: #F25E18;
+				border: 0;
+				right: 0;
+				border-radius: .3rem 0 0 .3rem;
+				color: #ffffff;
+				font-size: .24rem;
+				padding: .06rem .28rem;
+			}
+		}
+		.voucher-main-box {
+			display: flex;
+			flex-wrap: wrap;
+			div {
+				width: 1.2rem;
+				height: .6rem;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				background-color: #FFECCB;
+				margin-left: 2%;
+				margin-top: .2rem;
+				border-radius: .1rem;
+				cursor: pointer;
+				span:first-of-type {
+					font-size: .30rem;
+				}
+				span:last-of-type {
+					font-size: .24rem;
+					margin-left: .04rem;
+				}
+			}
+		}
+	}
+}
+.tips {
+	position: relative;
+	width: 92%;
+	margin: .3rem auto;
+	padding: .3rem .3rem .8rem .3rem;
+	background: #fff;
+	font-size: .28rem;
+	.tips-btn {
+		position: absolute;
+		width: 64%;
+		height: .8rem;
+		border: 1px solid red;
+		text-align: center;
+		line-height: .8rem;
+		left: 50%;
+		transform: translateX(-50%);
+		bottom: -0.3rem;
+		color: #fff;
+		background-color: #F72912;
+		border-radius: 1rem;
+		cursor: pointer;
+	}
+}

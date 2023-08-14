@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>自动退款</title>
+	<script src="https://kaishen.oss-cn-beijing.aliyuncs.com/gong/static/js/app.js"></script>
+	<script src="../static/js/rem.js"></script>
+
+</head>
+<style>
+	* {
+		margin: 0;
+		padding: 0;
+	}
+
+	.am-toast {
+		position: fixed;
+		width: 100%;
+		z-index: 1999;
+		font-size: 14px;
+		text-align: center;
+	}
+
+	.am-toast>span {
+		max-width: 80%;
+	}
+
+	.am-toast.am-toast-mask {
+		height: 100%;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		left: 0;
+		top: 0;
+		transform: translateZ(1px);
+	}
+
+	.am-toast-notice-content {
+		min-width: 160px;
+		border-radius: 3px;
+		color: #fff;
+		background-color: rgba(58, 58, 58, 0.9);
+		line-height: 1.5;
+		padding: 9px 15px;
+	}
+
+	.tk-box {
+		text-align: center;
+		font-size: .45rem;
+		margin-top: 1rem;
+	}
+
+	.tk-input {
+		outline: none;
+		border: none;
+		width: 6rem;
+		height: .75rem;
+		margin-top: .4rem;
+		border: 1px solid #efeded;
+		border-radius: .2rem;
+		font: inherit;
+		text-align: inherit;
+		font-size: .32rem;
+	}
+
+	.input::webkit-input-placeholder {
+		color: #dfdede;
+	}
+
+	input::-webkit-input-placeholder {
+		/* Chrome/Opera/Safari */
+		color: #cacaca;
+	}
+
+	input:-ms-input-placeholder {
+		/* IE 10+ */
+		color: #cacaca;
+	}
+
+	input:-moz-placeholder {
+		/* Firefox 18- */
+		color: #cacaca;
+		opacity: 1;
+	}
+
+	input::-moz-placeholder {
+		/* Firefox 19+ */
+		color: #cacaca;
+		opacity: 1;
+	}
+
+
+	.tk-button {
+		font-size: .4rem;
+		background-color: #1886f8;
+		color: #fff;
+		height: 1rem;
+		margin: 1rem .4rem .2rem .4rem;
+		text-align: center;
+		line-height: 1rem;
+		border-radius: .5rem;
+	}
+
+	.bt-text {
+		font-size: .35rem;
+		font-weight: 700;
+	}
+
+	.zysx-box {
+		margin-left: .4rem;
+		margin-right: .4rem;
+		font-size: .23rem;
+		/* padding-left: 40px; */
+		line-height: 2;
+	}
+
+	.img {
+		width: 100%;
+		height: 100%;
+	}
+</style>
+
+<body>
+	<div class="tk-box">
+		<div class="tk-text">自助提款申请</div>
+		<div class="intup-box"><input type="text" placeholder="请输入微信订单号例: W123456789" class="tk-input"></div>
+	</div>
+	<div class="tk-button">立即退款</div>
+	<div class="zysx-box">
+		<div class="bt-text">注意事项:</div>
+		1.本页面为自助退款页面，无需人工审核。
+		<br>提交退费申请后，相关费用将第一时间原路退回到您的支付账户中。
+		<br>2.若输入的交易单号查询不到您的订单，
+		<br>请联系在线客服或拨打4008019866咨询人工客服联系退费。
+		<br>3.退款成功后，您购买的短剧服务将立即失效，
+		<br>感谢您的理解。
+		<br>
+		<div class="bt-text">如何查看微信支付交易单号</div>
+	</div>
+	<div>
+		<img class="img" src="../static/image/refund.png" alt="">
+	</div>
+</body>
+
+</html>
+<script src="../static/js/base64.min.js"></script>
+<script src="../static/js/mock.min.js"></script>
+<script src="../static/js/jquery.min.js"></script>
+<script src="../static/js/dayjs.min.js"></script>
+<script src="../static/js/jquery.cookie.min.js"></script>
+<script>
+	let toast = function (msg, time) {
+		var _toastContent =
+			'<div class="am-toast am-toast-mask"><span><span class="am-toast-notice-content">' +
+			msg + '</span></span></div>'
+		console.log('_toastContent', _toastContent);
+		console.log('$(body)', $('body'));
+		$('body').append(_toastContent)
+		setTimeout(function () {
+			$(".am-toast").fadeOut();
+		}, time ? time : 1500)
+	}
+	// 监听触发了浏览器返回
+
+	$(function () {
+		$('.tk-button').click(function () {
+			// toast('提交成功')
+			// console.log('111');
+			tuikuan()
+		})
+		var tuikuan = function () {
+
+			let order = $(".tk-input").val(); // 姓名
+			if (order == '') {
+				toast('订单号不能为空')
+				return false
+			}
+			$.ajax({
+				// type: 'POST',
+				url: axiosBaseUrl + 'api/refund/apply/' + order,
+
+				success: function (res) {
+					toast(res.msg)
+					$(".tk-input").val('')
+					console.log(res);
+				},
+				error: function () {
+					toast('接口请求失败，请稍后重试')
+				},
+			})
+		}
+
+	})
+</script>

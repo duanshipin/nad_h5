@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	<head>
+		<meta charset="UTF-8">
+		
+		<meta name="viewport"
+			content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<title>订单处理</title>
+		<link rel="stylesheet" href="https://kaishen.oss-cn-beijing.aliyuncs.com/gong/static/css/app.294a59d7.css">
+		<link rel="stylesheet" href="https://kaishen.oss-cn-beijing.aliyuncs.com/gong/static/css/feedback.c2ea3188.css">
+		<script src="https://kaishen.oss-cn-beijing.aliyuncs.com/gong/static/js/jweixin-1.6.0.js"></script>
+		<link rel="stylesheet" href="https://kaishen.oss-cn-beijing.aliyuncs.com/gong/static/css/views/complaint.css">
+		<!-- 引入样式文件 -->
+		<link rel="stylesheet" href="https://kaishen.oss-cn-beijing.aliyuncs.com/gong/static/vant/index.css" />
+		<!-- 引入 Vue 和 Vant 的 JS 文件 -->
+		<script src="https://kaishen.oss-cn-beijing.aliyuncs.com/gong/static/vue/vue.min.js"></script>
+		<script src="https://kaishen.oss-cn-beijing.aliyuncs.com/gong/static/vant/vant.min.js"></script>
+		<script src="https://kaishen.oss-cn-beijing.aliyuncs.com/gong/static/vue/axios.min.js"></script>
+		<script src="https://kaishen.oss-cn-beijing.aliyuncs.com/gong/static/js/CryptoJS.min.js"></script>
+		<script src="https://kaishen.oss-cn-beijing.aliyuncs.com/gong/static/js/app.js"></script>
+		<meta name="referrer" content="always">
+		<meta name="head:count" content="2">
+	</head>
+
+	<body>
+		<div id="app">
+			<main class="feedback">
+				<section class="phone">
+					<div class="line1"><input v-model="form.phone" class="finput" type="tel" placeholder="请输入下单手机号"></div>
+					<div class="line2"><input placeholder="请输入短信中的六位数字" v-model="form.code"></div>
+				</section>
+				<section class="options">
+					<div class="header">选择问题类型</div>
+					<div class="select">
+						<van-radio-group v-model="form.reason">
+						  <van-radio :name="item" v-for="(item, index) in reasonArr" :key="index" checked-color="#ff894f" icon-size="16px">{{item}}</van-radio>
+						</van-radio-group>
+					</div>
+				</section>
+				<section class="other">
+					<div class="header">其他问题</div>
+					<div class="van-cell van-field">
+						<div class="van-cell__value van-cell__value--alone van-field__value">
+							<!--[-->
+							<div class="van-field__body">
+								<textarea id="van-field-3-input" v-model="form.remark" :maxlength="200" class="van-field__control van-field__control--min-height" placeholder="请输入您的问题"></textarea>
+							</div>
+							<div class="van-field__word-limit"><span class="van-field__word-num">{{remarksLength}}</span>/200</div>
+						</div>
+					</div>
+				</section>
+				<a class="contact" style="color:#707c93;" :href="configInfo.kefu_url">马上联系客服</a>
+				<button class="submit" @click="submit">提交</button>
+			</main>
+		</div>
+
+	<script>
+		new Vue({
+			el: '#app',
+			data() {
+				return {
+					// 退款原因
+					reasonArr: [],
+					// 单选框值
+					reason: '',
+					// 表单
+					form: {
+						phone: '',
+						code: '',
+						reason: '',
+						remarks: ''
+					},
+					remarksLength: 0,
+					configInfo: {}
+				}
+			},
+			watch: {
+				'form.remark': {
+					handler(newValue, oldValue) {
+						console.log(newValue)
+						if(newValue) {
+							this.remarksLength = newValue.length;
+						} else {
+							this.remarksLength = 0;
+						}
+					},
+					deep: true,
+					immediate: true
+				}
+			},
+			methods: {
+				// 获取退款原因
+				async getReason() {
+					let res = await axios.post(axiosBaseUrl + '/api/v1/help/tuikuanYuanyin');
+					if(res.status === 200 && res.data.code === 200) {
+						let data = res.data.data;
+						const response = JSON.parse(decrypt(data.data, data.key)).info;
+						this.reasonArr = response;
+					}
+				},
+				// 提交表单
+				submit() {
+					if(!this.form.phone) {
+						vant.Toast('请输入手机号');
+						return false;
+					}
+					if(!this.form.code) {
+						vant.Toast('请输入验证码');
+						return false;
+					}
+					if(this.form.code.length!=6) {
+						vant.Toast('请输入6位验证码');
+						return false;
+					}
+					if(!this.form.reason && !this.form.remarks) {
+						vant.Toast('请选择问题类型或输入其他问题');
+						return false;
+					}
+					console.log(this.form)
+				},
+				// 获取配置售后电话
+				async getGloablSet() {
+					let res = await axios.post(axiosBaseUrl + '/api/v1/help/getGloablSet');
+					if(res.status === 200 && res.data.code === 200) {
+						let data = res.data.data;
+						const response = JSON.parse(decrypt(data.data, data.key)).info;
+						this.configInfo = response;
+					}
+				}, 
+			},
+			mounted() {
+				this.getReason();
+				this.getGloablSet();
+			}
+		});
+	</script>
+	</body>
+</html>

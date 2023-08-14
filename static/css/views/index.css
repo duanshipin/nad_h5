@@ -1,0 +1,46 @@
+/* 规则 */
+.rpopbar {
+	height: 0.72rem;
+	margin: 0 auto;
+	position: relative;
+	width: 3.36rem;
+	z-index: 1;
+}
+.rpop {
+	background: #fff;
+	border-radius: 0.2rem;
+	height: 8rem;
+	margin: -0.29rem auto 1.2rem;
+	overflow: hidden auto;
+	padding: 0.57rem 0.24rem 0.24rem;
+	width: 6rem;
+}
+.rpoptitle {
+	background: linear-gradient(90deg,#fe693c,#f21e14);
+	border-radius: 0.3rem;
+	color: #fff;
+	font-size: .26rem;
+	height: 0.56rem;
+	margin-bottom: 0.24rem;
+	width: 2.04rem;
+}
+/* 查券充值 */
+.wrapper {
+	background: var(--van-overlay-background-color);
+	height: 100%;
+	left: 0;
+	position: fixed;
+	top: 0;
+	width: 100%;
+	z-index: 999999;
+}
+.operator-warp {
+	width: 100%;
+	padding-left: .5rem;
+}
+.operator-warp div {
+	font-size: .24rem;
+}
+.section.s1 {
+	margin-top: -0.6rem;
+}

@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	<head>
+		<meta charset="UTF-8">
+		
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<title>充值</title>
+		<link rel="stylesheet" href="../static/css/app.294a59d7.css">
+		<link rel="stylesheet" href="../static/css/p20.38683d08.css">
+		<script src="../static/js/jweixin-1.6.0.js"></script>
+		<!-- 引入样式文件 -->
+		<link rel="stylesheet" href="../static/vant/index.css" />
+		<!-- 引入 Vue 和 Vant 的 JS 文件 -->
+		<script src="../static/vue/vue.min.js"></script>
+		<script src="../static/vant/vant.min.js"></script>
+		<script src="../static/vue/axios.min.js"></script>
+		<script src="../static/js/CryptoJS.min.js"></script>
+		<script src="../static/js/app.js"></script>
+		<!--引入less.min.js文件 -->
+		<link rel="stylesheet/less" href="../static/css/views/recharge.less">
+		<script src="../static/js/less.3.8.1.min.js" ></script>
+		<script>(function() {var _53code = document.createElement("script");_53code.src = "https://tb.53kf.com/code/code/4a4b7cf22647965ddefd94e12549b2ec0/1";var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(_53code, s);})();</script>
+		<meta name="referrer" content="always">
+		<meta name="head:count" content="2">
+	</head>
+	<body>
+		<div id="app">
+			<main class="container">
+				<!-- banner -->
+				<div class="banner">
+					<img src="" alt="">
+				</div>
+				<!-- 充值 -->
+				<div class="recharge">
+					<div class="recharge-notice">
+						<van-notice-bar left-icon="volume-o" text="营业时间: 10:00 - 22:00"/>
+					</div>
+					<div class="recharge-input">
+						<van-field v-model="form.phone" type="tel" style="background: none;padding: 10px 0;"
+							:maxlength="11" placeholder="请输入手机号码" />
+						<!-- <input type="number" placeholder="请输入手机号码"> -->
+						<img src="../static/image/icon/shouji.png" alt="">
+						<div class="recharge-input-tips" v-show="phoneErrShow">
+							{{tips}}
+						</div>
+					</div>
+					<div class="recharge-history" @click="rechargeHistoryHandle">
+						<span>充值订单</span>
+						<van-icon name="arrow" />
+					</div>
+				</div>
+				<!-- 充值金额 -->
+				<div class="money">
+					<div class="money-title">话费充值</div>
+					<div class="money-main">
+						<div class="money-item" v-for="(item,index) in voucherList" :key="index" :class="{'active': activeIndex==index}" @click="selectMoney(item, index)">
+							<div><span>{{item.price}}</span><span>元</span></div>
+							<div>券后价￥{{item.newPrice}}</div>
+						</div>
+					</div>
+				</div>
+				<!-- 温馨提示 -->
+				<div class="tips">
+					<div class="tips-title">温馨提示:</div>
+					<div class="tips-item">
+						1.支持全国移动、联通、电信三网充值;
+					</div>
+					<div class="tips-item">
+						2.<span style="color: #F24220;">虚拟号</span>以及<span style="color: #F24220;">携号转网</span>的手机号会充值失败，充值失败的会自动退款；
+					</div>
+					<div class="tips-item">
+						3.<span style="color: #F24220;">慢充72小时</span>内到账，<span style="color: #F24220;">快充1~5小时</span>到账，如遇高峰时段 (月初/月末/节假日)，到账时间可能会稍有延迟，具体到账时间以当地运营商处理时间为准，请耐心等待!
+					</div>
+				</div>
+				<!-- 侧边栏浮窗 -->
+				<!-- <aside class="aside">
+					<a class="asbtn" :href="configInfo.kefu_url" target="_blank"><van-icon name="service-o"/>&nbsp;&nbsp;客服帮助</a>
+				</aside> -->
+			</main>
+			
+			<!-- 充值弹窗 -->
+			<div class="mask" v-show="show"></div>
+			<div class="popup" v-show="show">
+				<img src="../static/image/icon/guanbi.png" class="guanbi" alt="" @click="close">
+				<div class="popup-title">确认信息</div>
+				<div class="popup-main">
+					<div class="label">充值号码: </div>
+					<div class="phone">{{form.phone}}</div>
+					<div class="popup-content">
+						<div class="popup-item">
+							1.请仔细核对充值号码，充值错误无法退回;
+						</div>
+						<div class="popup-item">
+							2.<span style="color: #F24220;">虚拟号</span>以及<span style="color: #F24220;">携号转网</span>的手机号会充值失败，充值失败的会自动退款；
+						</div>
+						<div class="popup-item">
+							3.<span style="color: #F24220;">慢充72小时</span>内到账，<span style="color: #F24220;">快充1~5小时</span>到账，如遇高峰时段 (月初/月末/节假日)，到账时间可能会稍有延迟，具体到账时间以当地运营商处理时间为准，请耐心等待!
+						</div>
+					</div>
+					<div class="btn" @click="next">继续充值</div>
+				</div>
+			</div>
+			
+		</div>
+		<script>
+			new Vue({
+				el: '#app',
+				data() {
+					return {
+						tips: '请输入正确的手机号',
+						phoneErrShow: false,
+						
+						voucherList: [{
+							price: 100,
+							newPrice: '95.00'
+						},{
+							price: 200,
+							newPrice: '188.00'
+						}],
+						// 选中的金额
+						activeIndex: null,
+						activeMoney: {},
+						
+						// 充值弹窗
+						show: false,
+						
+						form: {
+							phone: ''
+						},
+						configInfo: {}
+					}
+				},
+				methods: {
+					// 充值订单
+					rechargeHistoryHandle() {
+						window.location.href = './order.html';
+					},
+					// 获取配置售后电话
+					async getGloablSet() {
+						let res = await axios.post(axiosBaseUrl + '/api/v1/help/getGloablSet');
+						if (res.status === 200 && res.data.code === 200) {
+							let data = res.data.data;
+							const response = JSON.parse(decrypt(data.data, data.key)).info;
+							this.configInfo = response;
+						}
+					},
+					// 选择充值金额
+					selectMoney(item, index) {
+						this.activeIndex = index;
+						this.activeMoney = item;
+						this.show = true;
+					},
+					// 关闭弹窗
+					close() {
+						this.show = false;
+						this.activeIndex = null;
+					},
+					// 获取用户信息
+					async getUserInfo() {
+						var res = await axios.post(axiosBaseUrl + `/api/v1/user/getMyinfo?uuid=${getQueryVariable('uuid')}`);
+						if (res.status === 200 && res.data.code === 200) {
+							let data = res.data.data;
+							const response = JSON.parse(decrypt(data.data, data.key)).info;
+							console.log(response)
+							localStorage.setItem("token", response.token);
+							localStorage.setItem("uuid", response.uuid);
+							localStorage.setItem("phone", response.phone);
+							// 如果没有openid
+							if(response.openid) {
+								localStorage.setItem(window.location.host+"openid", response.openid);
+							} else {
+								// 如果是在微信浏览器中
+								const isWechat = isWeiXin();
+								this.ua = isWechat;
+								if (isWechat == 'weixin') {
+									this.getWechatCode();
+								}
+							}
+						}
+					},
+					// 继续充值
+					async next() {
+						let url = axiosBaseUrl + `/api/v1/order/addOrder?phone=${this.form.phone}&huafei=${this.activeMoney.price}&openid=${localStorage.getItem(window.location.host+"openid")}&domain=${location.host}`
+						let res = await axios.post(url, {}, {
+							headers: {
+								"authentication": `${localStorage.getItem("token")}`
+							}
+						});
+						if (res.status === 200 && res.data.code === 200) {
+							let data = res.data.data;
+							const response = JSON.parse(decrypt(data.data, data.key)).info;
+							console.log(response)
+							localStorage.setItem("phone", this.form.phone);
+							window.location.href = "./settlement.html?id=" + response.id;
+						} else {
+							vant.Toast(res.data.message)
+						}
+					},
+					async getWechatCode() {
+						let getAppid = await axios.post(axiosBaseUrl + '/api/v1/payym/getAppid?domain=' + location.host);
+						let apid = getAppid.data.data;
+						let appid = JSON.parse(decrypt(apid.data, apid.key)).info.appid;
+						if(appid) {
+							// let appid = "wxe8d067049280fa21"; //微信APPid
+							let code = getQueryVariable('code'); //是否存在code
+							let local = window.location.href;
+							if (!code) {
+								//不存在就打开上面的地址进行授权
+								// 应用授权作用域，snsapi_base (不弹出授权页面，直接跳转，只能获取用户openid)，
+								// snsapi_userinfo (弹出授权页面，可通过openid拿到昵称、性别、所在地。并且， 即使在未关注的情况下，只要用户授权，也能获取其信息 )
+								window.location.href =
+									"https://open.weixin.qq.com/connect/oauth2/authorize?appid=" +
+									appid +
+									"&redirect_uri=" +
+									encodeURIComponent(local) +
+									"&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect";
+							} else {
+								// if (!localStorage.getItem('openid')) {
+									// 获取openid
+									axios.post(axiosBaseUrl + '/api/v1/authwx/getOpenid?code=' + code +'&domain='+location.host).then((res) => {
+										let data = res.data.data;
+										const response = JSON.parse(decrypt(data.data, data.key)).info;
+										localStorage.setItem(window.location.host+"openid", response.openid);
+									})
+								// }
+							}
+						} else {
+							console.log('appid获取失败')
+						}
+					}
+				},
+				mounted() {
+					this.getGloablSet();
+					// 说明是单独进入此页面
+					if(getQueryVariable('uuid')) {
+						this.getUserInfo();
+						return false;
+					}
+					// 说明是从上一步进来
+					if(localStorage.getItem('uuid') && localStorage.getItem('token') && localStorage.getItem('phone')) {
+						this.form.phone = localStorage.getItem('phone');
+						// 如果是在微信浏览器中
+						const isWechat = isWeiXin();
+						this.ua = isWechat;
+						if (!localStorage.getItem(window.location.host+'openid') && isWechat == 'weixin') {
+							this.getWechatCode();
+						}
+						// console.log('uuid', localStorage.getItem('uuid'))
+						// console.log('token', localStorage.getItem('token'))
+						// console.log('phone', localStorage.getItem('phone'))
+						return false;
+					}
+					vant.Dialog.alert({
+					  title: '提示',
+					  message: '用户信息已失效，请从短信登录',
+					}).then(() => {
+					  // on close
+					  window.location.href = "./index.html"
+					});
+				}
+			});
+		</script>
+	</body>
+</html>

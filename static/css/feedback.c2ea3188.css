@@ -1,0 +1,225 @@
+.feedback {
+	background: #f5f5f5;
+	color: #484b4d;
+	min-height: 100vh;
+	overflow: auto
+}
+
+.feedback input {
+	-webkit-tap-highlight-color: transparent;
+	border: none
+}
+
+.feedback input::-moz-placeholder {
+	color: #c9ced2
+}
+
+.feedback input::placeholder {
+	color: #c9ced2
+}
+
+.feedback>section {
+	background: #fff;
+	border-radius: .08rem;
+	box-shadow: 0 0 .24rem #0000000d;
+	margin: .32rem auto;
+	width: 6.86rem
+}
+
+.feedback>section .header {
+	color: #484b4d;
+	font-family: PingFangSC-Medium, PingFang SC;
+	font-size: .3rem;
+	font-weight: 500;
+	line-height: .46rem
+}
+
+.feedback>section.phone {
+	padding: 0 .24rem
+}
+
+.feedback>section.phone .line1 {
+	border-bottom: 1px solid #d0d4d5;
+	padding: .3rem 0
+}
+
+.feedback>section.phone .line1 input {
+	font-size: .3rem;
+	line-height: .46rem
+}
+
+.feedback>section.phone .line2 {
+	align-items: center;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	padding: .24rem 0
+}
+
+.feedback>section.phone .line2 input {
+	font-size: .3rem;
+	height: .46rem;
+	line-height: .46rem
+}
+
+.feedback>section.phone .line2 button {
+	background: #ff894f;
+	border: none;
+	border-radius: .28rem;
+	box-shadow: none;
+	color: #fff;
+	font-family: PingFangSC-Regular, PingFang SC;
+	font-size: .28rem;
+	font-weight: 400;
+	height: .56rem;
+	line-height: .56rem;
+	text-align: center;
+	width: 1.6rem
+}
+
+.feedback>section.phone .line2 button:disabled {
+	opacity: .7
+}
+
+.feedback>section.options {
+	padding: .24rem
+}
+
+.feedback>section.options .select .option {
+	align-items: center;
+	display: flex;
+	flex-direction: row;
+	height: .76rem;
+	justify-content: flex-start
+}
+
+.feedback>section.options .select .option .left {
+	border: 1px solid #979797;
+	border-radius: 50%;
+	height: .32rem;
+	width: .32rem
+}
+
+.feedback>section.options .select .option .right {
+	margin-left: .2rem
+}
+
+.feedback>section.options .select .option.sel .left {
+	border: .08rem solid #ff894f;
+	height: .28rem;
+	margin: 1px;
+	width: .28rem
+}
+
+.feedback>section.other {
+	padding: .24rem .24rem .4rem
+}
+
+.feedback>section.other .van-field {
+	background: #f5f5f5;
+	border-radius: .08rem;
+	box-sizing: border-box;
+	height: 2.7rem;
+	margin-top: .28rem;
+	padding: .24rem;
+	width: 100%
+}
+
+.feedback>section.other .van-field textarea {
+	height: 1.9rem
+}
+
+.feedback .contact {
+	color: #484b4d;
+	font-size: .3rem;
+	line-height: .42rem;
+	margin: .4rem .6rem
+}
+
+.feedback .contact,
+.feedback .contact span {
+	font-family: PingFangSC-Medium, PingFang SC;
+	font-weight: 500
+}
+
+.feedback .contact span {
+	border: 1px solid #979797;
+	border-radius: .24rem;
+	box-sizing: border-box;
+	color: #979797;
+	font-size: .24rem;
+	height: .4rem;
+	line-height: .34rem;
+	padding: 1px .16rem;
+	text-align: center;
+	width: .8rem
+}
+
+.feedback .submit {
+	background: #ff894f;
+	border: none;
+	border-radius: .5rem;
+	box-sizing: border-box;
+	color: #fff;
+	display: block;
+	font-family: PingFangSC-Semibold, PingFang SC;
+	font-size: .32rem;
+	font-weight: 600;
+	height: .96rem;
+	line-height: .96rem;
+	margin: .68rem auto;
+	padding: 0;
+	text-align: center;
+	width: 6.86rem
+}
+
+.feedback .submit:disabled {
+	opacity: .8
+}
+
+.feedback .aside {
+	position: fixed;
+	right: 0;
+	top: .48rem
+}
+
+.feedback .asbtn {
+	background: rgba(0, 0, 0, .6);
+	border: 0;
+	border-radius: .3rem 0 0 .3rem;
+	color: #ffffffd9;
+	display: block;
+	font-size: .24rem;
+	height: .5rem;
+	line-height: .5rem;
+	margin: 0 0 .72rem auto;
+	padding: 0 .22rem 0 .3rem
+}
+
+.van-popup {
+	background-color: transparent
+}
+
+.modalcontent .result {
+	color: #fff;
+	font-family: PingFangSC-Medium, PingFang SC;
+	font-size: .36rem;
+	font-weight: 500;
+	height: .5rem;
+	line-height: .5rem;
+	max-width: 6rem;
+	text-align: center;
+	word-break: break-all
+}
+
+.modalcontent .icon {
+	background: #3fcd5b;
+	border-radius: 1.2rem;
+	color: #fff;
+	font-size: .9rem;
+	height: 1.2rem;
+	line-height: 1.2rem;
+	margin: .9rem auto 0;
+	text-align: center;
+	width: 1.2rem
+}

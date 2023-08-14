@@ -1,0 +1,66 @@
+#app {
+	width: 100%;
+	min-height: 100vh;
+	background-color: #F3F4F5;
+}
+.main {
+	position: relative;
+	width: 92%;
+	margin: 0 auto;
+	overflow: hidden;
+	.main-item {
+		background-color: #fff;
+		margin-top: .3rem;
+		border-radius: .3rem;
+		.title {
+			padding: .2rem 0.3rem .2rem 0.3rem;
+			border-bottom: 1px solid #F3F4F5;
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			span:nth-of-type(1) {
+				font-weight: bold;
+				font-size: .30rem;
+			}
+			.stauts {
+				display: inline-block;
+				background-color: #01CC88;
+				width: 1.2rem;
+				height: .44rem;
+				color: #fff;
+				border-radius: .5rem;
+				font-size: .24rem;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+			}
+		}
+		.tips {
+			background-color: #FFF7ED;
+			border-radius: .3rem;
+			margin: .1rem .3rem;
+			height: .48rem;
+			line-height: .48rem;
+			div {
+				height: .48rem;
+				line-height: .48rem;
+				padding: 0 0.2rem;
+				font-size: .24rem;
+			}
+		}
+	}
+	.van-card {
+		background-color: #fff;
+		.van-card__title {
+			font-weight: bold;
+			font-size: .30rem;
+			margin-top: .1rem;
+		}
+	}
+}
+.err {
+	background-color: #F72912 !important;
+}
+.warning {
+	background-color: #b3b341 !important;
+}

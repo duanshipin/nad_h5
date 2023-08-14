@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	<head>
+		<meta charset="UTF-8">
+		
+		<meta name="viewport"
+			content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<title>用户协议</title>
+		<link rel="stylesheet" href="https://kaishen.oss-cn-beijing.aliyuncs.com/gong/static/css/app.294a59d7.css">
+		<link rel="stylesheet" href="https://kaishen.oss-cn-beijing.aliyuncs.com/gong/static/css/p20.38683d08.css">
+		<script src="https://kaishen.oss-cn-beijing.aliyuncs.com/gong/static/js/jweixin-1.6.0.js"></script>
+		<!-- 引入样式文件 -->
+		<link rel="stylesheet" href="https://kaishen.oss-cn-beijing.aliyuncs.com/gong/static/vant/index.css" />
+		<!-- 引入 Vue 和 Vant 的 JS 文件 -->
+		<script src="https://kaishen.oss-cn-beijing.aliyuncs.com/gong/static/vue/vue.min.js"></script>
+		<script src="https://kaishen.oss-cn-beijing.aliyuncs.com/gong/static/vant/vant.min.js"></script>
+		<script src="https://kaishen.oss-cn-beijing.aliyuncs.com/gong/static/vue/axios.min.js"></script>
+		<script src="https://kaishen.oss-cn-beijing.aliyuncs.com/gong/static/js/CryptoJS.min.js"></script>
+		<script src="https://kaishen.oss-cn-beijing.aliyuncs.com/gong/static/js/app.js"></script>
+		<!--引入less.min.js文件 -->
+		<link rel="stylesheet/less" href="../static/css/views/order.less">
+		<script src="https://kaishen.oss-cn-beijing.aliyuncs.com/gong/static/js/less.3.8.1.min.js"></script>
+		<meta name="referrer" content="always">
+		<meta name="head:count" content="2">
+	</head>
+
+	<body>
+		<div id="app">
+			<main class="container">
+				<div class="main">
+					<div v-html="privacyContent.body"></div>
+				</div>
+			</main>
+		</div>
+		<script>
+			new Vue({
+				el: '#app',
+				data() {
+					return {
+						privacyContent: {}
+					}
+				},
+				mounted() {
+					this.getAgreement()
+				},
+				methods: {
+					async getAgreement() {
+						let url =
+							axiosBaseUrl + `/api/v1/help/yinsi`
+						let res = await axios.post(url);
+						if (res.status === 200 && res.data.code === 200) {
+							let data = res.data.data;
+							const response = JSON.parse(decrypt(data.data, data.key)).info;
+							this.privacyContent = response
+						}
+					},
+				},
+			});
+		</script>
+	</body>
+</html>

@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	<head>
+		<meta charset="UTF-8">
+		
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+		<title>支付成功</title>
+		<link rel="stylesheet" href="../static/css/app.294a59d7.css">
+		<link rel="stylesheet" href="../static/css/p20.38683d08.css">
+		<script src="../static/js/jweixin-1.6.0.js"></script>
+		<!-- 引入样式文件 -->
+		<link rel="stylesheet" href="../static/vant/index.css" />
+		<!-- 引入 Vue 和 Vant 的 JS 文件 -->
+		<script src="../static/vue/vue.min.js"></script>
+		<script src="../static/vant/vant.min.js"></script>
+		<script src="../static/vue/axios.min.js"></script>
+		<script src="../static/js/CryptoJS.min.js"></script>
+		<script src="../static/js/app.js"></script>
+		<!--引入less.min.js文件 -->
+		<link rel="stylesheet/less" href="../static/css/views/success.less">
+		<script src="../static/js/less.3.8.1.min.js" ></script>
+		<script>(function() {var _53code = document.createElement("script");_53code.src = "https://tb.53kf.com/code/code/4a4b7cf22647965ddefd94e12549b2ec0/1";var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(_53code, s);})();</script>
+		<meta name="referrer" content="always">
+		<meta name="head:count" content="2">
+	</head>
+
+	<body>
+		<div id="app">
+			<main class="container">
+				<div v-if="status=='success'">
+					<!-- 头部信息 -->
+					<div class="header">
+						<div class="header-icon">
+							<div><van-icon name="passed" color="#24B324" size="38"/></div>
+							<div>支付成功</div>
+						</div>
+						<div class="header-orderNo">订单编号： {{info.orderno}}</div>
+					</div>
+					<!-- 话费券发放 -->
+					<div class="notice">
+						<div class="notice-title">您的话费券正在发放中</div>
+						<div class="notice-info">
+							<van-icon name="comment-o" />
+							<span>请查收短信通知</span>
+						</div>
+						<div class="notice-icon">
+							<img src="../static/image/icon/xiangxiajiantou.png" alt="">
+						</div>
+						<div class="notice-content">
+							<div>{{info.phone}}</div>
+							<div v-html="info.smsbody"></div>
+						</div>
+						<div class="notice-tips">(官方短信截图)</div>
+					</div>
+					<!-- 优惠券信息 -->
+					<div class="voucher">
+						<div class="voucher-title">话费礼包说明</div>
+						<div class="voucher-main">
+							<div class="voucher-main-tj">
+								<div class="voucher-price">
+									价值<span>{{info.huafei}}元</span>
+								</div>
+								<div class="voucher-total">
+									共<span>{{info.coupon_list.length}}张</span>
+								</div>
+							</div>
+							<div class="voucher-main-box">
+								<div v-for="(item, index) in voucher" :key="index">
+									<span>{{item.facevalue}}</span>
+									<span>元</span>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- 提示文字 -->
+					<div class="tips">
+						<div>话费券包已发送至您的账号</div>
+						<div>话费有效期1年，除充值不成功外，不可退货</div>
+						<div class="tips-btn" @click="rechargeHandle">去充值</div>
+					</div>
+				</div>
+				<div v-if="status=='err'">
+					<van-empty image="error" description="支付失败, 请联系客服" />
+				</div>
+				<div v-if="!status">
+					<!-- <van-empty image="error" description="暂无内容" /> -->
+				</div>
+				<!-- 侧边栏浮窗 -->
+				<aside class="aside">
+					<!-- <a class="asbtn" :href="configInfo.kefu_url" target="_blank">客服</a> -->
+					<a class="asbtn-line" style="background-color: #F52C1E;" href="complaint.html" target="_blank">举报<br>中心</a>
+				</aside>
+			</main>
+		</div>
+		<script>
+			new Vue({
+				el: '#app',
+				data() {
+					return {
+						// 配置信息
+						configInfo: {},
+						// 支付详情信息
+						info: {},
+						// 优惠券
+						voucher: [],
+						// 计时器
+						timer: '',
+						status: '',
+						count: 0
+					}
+				},
+				methods: {
+					// 获取配置售后电话
+					async getGloablSet() {
+						let res = await axios.post(axiosBaseUrl + '/api/v1/help/getGloablSet');
+						if (res.status === 200 && res.data.code === 200) {
+							let data = res.data.data;
+							const response = JSON.parse(decrypt(data.data, data.key)).info;
+							this.configInfo = response;
+						}
+					},
+					// 去充值
+					rechargeHandle() {
+						window.location.href = './recharge.html'
+					},
+					// 轮询支付是否成功
+					async isPayStatus() {
+						let res = await axios.post(axiosBaseUrl + `/api/v1/packorder/ispay?oid=${getQueryVariable('oid')}&phone=${getQueryVariable('phone')}`);
+						if (res.status === 200 && res.data.code === 200) {
+							let data = res.data.data;
+							const response = JSON.parse(decrypt(data.data, data.key)).info;
+							console.log(response)
+							console.log('轮询中: ', this.count)
+							if(response[0]=='no' && this.count<=2) {
+								return false;
+							}
+							if(response[0]=='ok') {
+								document.title = '支付成功';
+								this.info = response[1];
+								this.voucher = response[1].coupon_list;
+								localStorage.setItem("token", response[1].token);
+								localStorage.setItem("uuid", response[1].uuid);
+								localStorage.setItem("phone", response[1].phone);
+								this.status = 'success';
+								vant.Toast.clear();
+							} else {
+								this.status = 'err';
+								document.title = '支付失败';
+								vant.Toast.clear();
+							}
+							localStorage.removeItem("oid");
+							clearInterval(this.timer);
+						}
+					},
+				},
+				mounted() {
+					// 轮询支付是否成功
+					this.count = 0;
+					if(getQueryVariable('oid')) {
+						vant.Toast.loading({
+						  message: '支付查询中...',
+						  forbidClick: true,
+						  duration: 0
+						});
+						this.isPayStatus();
+						this.timer = setInterval(() => {
+							this.isPayStatus();
+							this.count++
+						}, 3000)
+					}
+					
+					this.getGloablSet();
+				}
+			});
+		</script>
+	</body>
+</html>
