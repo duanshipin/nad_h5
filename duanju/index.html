@@ -1106,7 +1106,7 @@
         location.href = "./refund.html";
       },
 			async checkIsPay() {
-				var orderId = storage.getItem('orderId')
+				var orderId = localStorage.getItem('orderId')
     		if (orderId) {
 					var res = await axios.post(
 						axiosBaseUrl + `/api/v1/checkOrder?orderId=` + orderId
@@ -1126,7 +1126,7 @@
       });
       this.query = {
         nadkey: getQueryVariable("nadkey"),
-        unid: getQueryVariable("unid"),
+        unid: getQueryVariable("unid") || '64d6438316d89',
         bxm_id: getQueryVariable("bxm_id"),
         urlCode: getQueryVariable("urlCode"),
       };
