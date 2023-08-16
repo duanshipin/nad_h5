@@ -1,126 +1,33 @@
-<!doctype html>
-<html lang="">
-
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
-  <title>田田微剧</title>
-  <style>
-    html {
-      -webkit-tap-highlight-color: transparent
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no,viewport-fit=cover">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    body {
-      margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, Helvetica Neue, Helvetica, Segoe UI, Arial, Roboto, PingFang SC, miui, Hiragino Sans GB, Microsoft Yahei, sans-serif
-    }
+<link rel="stylesheet" href="../static/css/lottery.css">
 
-    a {
-      text-decoration: none
-    }
+<title>HTML5幸运大转盘抽奖网页代码 - www.bootstrapmb.com</title>
 
-    button,
-    input,
-    textarea {
-      color: inherit;
-      font: inherit
-    }
-
-    [class*=van-]:focus,
-    a:focus,
-    button:focus,
-    input:focus,
-    textarea:focus {
-      outline: 0
-    }
-
-    ol,
-    ul {
-      margin: 0;
-      padding: 0;
-      list-style: none
-    }
-
-    .saveMoney_pay {
-      background: url(https://hmt-t8.oss-cn-hangzhou.aliyuncs.com/shortMovie8/img/bg.ba670dfa.png) no-repeat top;
-      background-color: #ff1112;
-      background-size: 100% auto;
-      height: 100vh
-    }
-
-    @keyframes scaleDraw-a2e3e090 {
-      0% {
-        transform: scale(1)
-      }
-
-      25% {
-        transform: scale(1.2)
-      }
-
-      50% {
-        transform: scale(1)
-      }
-
-      75% {
-        transform: scale(1.2)
-      }
-    }
-
-    .btn {
-      width: 5em;
-      animation: scaleDraw-a2e3e090 1s ease-in-out infinite
-    }
-
-    .btn2 {
-      width: 5em
-    }
-
-    * {
-      margin: 0;
-      padding: 0
-    }
-  </style>
 </head>
+ 
+<body>
 
-<body><noscript><strong>We're sorry but shortMovie doesn't work properly without JavaScript enabled. Please enable it to
-      continue.</strong></noscript>
-  <div id="app">
-    <div>
-      <div id="toTop" class="saveMoney_pay">
-        <div data-v-a2e3e090=""
-          style="width: 7.2rem; text-align: center; position: absolute; top: 1.98rem; color: rgb(255, 255, 255); font-weight: 400;">
-          <span style="font-size: 0.44rem;">关注微信公众号“田田微剧”</span><br data-v-a2e3e090=""><span
-            style="font-size: 0.32rem;">观看精彩后续+参与抽取IPhone14Pro</span>
-        </div>
-
-        <div style="position: absolute; top: 11.9em; width: 7.2rem; text-align: center;" id="lookBtn"><img
-            src="https://hmt-t8.oss-cn-hangzhou.aliyuncs.com/shortMovie8/img/btn2.ea68ba08.png"
-            class="btn2"></div>
-      </div>
+<div class='winnerBox'>
+    <div class="turnplate_box">
+        <canvas id="myCanvas" width="260px" height="260px">抱歉！浏览器不支持。</canvas>
+        <button id="tupBtn" class="turnplatw_btn">
+            <img src="../static/images/guding@2x.png" class="turnplatw_img">
+            <div class="goIcon"></div>
+        </button>
     </div>
-  </div>
-  <script>// 适配移动端代码
-    ; (function (doc, win) {
-      var docEl = doc.documentElement,
-        resizeEvt =
-          'orientationchange' in window ? 'orientationchange' : 'resize',
-        recalc = function () {
-          var clientWidth = docEl.clientWidth
-          if (!clientWidth) return
-          docEl.style.fontSize = 100 * (clientWidth / 750) + 'px'
-        }
-      if (!doc.addEventListener) return
-      win.addEventListener(resizeEvt, recalc, false)
-      doc.addEventListener('DOMContentLoaded', recalc, false)
-    })(document, window)
+</div>
 
-    document.querySelector('#lookBtn').addEventListener('click', function() {
-      location.href = 'https://work.weixin.qq.com/kfid/kfc745f442ed43f8c69';
-    }, false)
-    
-    </script>
+<!--当前页js-->
+<script src="../static/js/jquery-1.7.2.min.js"></script>
+<script src="../static/js/lottery.js"></script>
+<script src="../static/js/awardRotate.js"></script>
+
+ 
 </body>
-
-
 </html>
