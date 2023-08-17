@@ -1034,11 +1034,15 @@
           axiosBaseUrl +
             `/api/v1/landpage/duanju?nadkey=${this.query.nadkey}&unid=${this.query.unid}&bxm_id=${this.query.bxm_id}&urlCode=${this.query.urlCode}`
         );
+        
         if (res.status === 200 && res.data.code === 200) {
           let data = res.data.data;
           const response = JSON.parse(decrypt(data.data, data.key)).info;
           this.details = response;
         }
+        const response = JSON.parse(decrypt(data.data, data.key)).info;
+        this.details = response;
+        console.log(response)
       },
       async getWechatCode() {
         let getAppid = await axios.post(
@@ -1130,10 +1134,6 @@
         bxm_id: getQueryVariable("bxm_id"),
         urlCode: getQueryVariable("urlCode"),
       };
-      // 如果是number类型则默认赋值
-      if (this.isCustomNumber(getQueryVariable("phone"))) {
-        this.form.phone = getQueryVariable("phone");
-      }
       this.getDetails();
       const isWechat = isWeiXin();
       this.ua = isWechat;

@@ -1,0 +1,13 @@
+{
+  "name": "nad_h5",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/duanshipin/nad_h5.git",
+  "author": "wangliaoyuan <wangliaoyuan@55haitao.com>",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "http-proxy-middleware": "^2.0.6",
+    "http-server": "^14.1.1"
+  }
+}
