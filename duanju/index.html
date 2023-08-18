@@ -894,8 +894,7 @@
             console.log('addOrder:::', res)
             let data = res.data.data;
             const response = JSON.parse(decrypt(data.data, data.key)).info;
-            // console.log(response)
-            // 使用第三方api支付
+            localStorage.setItem("randnum", response.randnum);
             if (response.is_hongwupay == 2) {
               setTimeout(() => {
                 this.loading = false;
@@ -1107,7 +1106,7 @@
 				var orderId = localStorage.getItem('oid')
     		if (orderId) {
 					var res = await axios.post(
-						axiosBaseUrl + `/api/v1/checkOrder?orderId=` + orderId
+						axiosBaseUrl + `/api/v1/checkOrder?orderId=` + orderId + '&randnum=' + localStorage.getItem('randnum')
 					);
 					if (res.status === 200 && res.data.code === 200) {
 					
