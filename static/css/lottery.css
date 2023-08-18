@@ -1,5 +1,5 @@
 body{
- background:linear-gradient(to bottom right, #fd6504 , #9470fd)
+ background:linear-gradient(to bottom right, #fd6504 , #9470fd);
 }
 .winnerBox{
     max-width:40rem;
@@ -9,7 +9,7 @@ body{
     /*background-color: #fd6504 #9470fd;*/
    
 }
-/* 大转盘样式 */
+/* 大转盘样式 */s
 .turnplate_box {
     width: 100%;
     background:url("../images/zhuanp@2x.png") no-repeat;
@@ -41,10 +41,11 @@ body{
     overflow: hidden;
 }
 .turnplatw_btn {
-    width: 30%;
-    height: 35%;
-    left: 35%;
-    top: 30.5%;
+    width: 116px;
+    height: 136px;
+    left: 50%;
+    margin-left: -58px;
+    top: 2.75rem;
     border-radius: 100%;
     position: absolute;
     cursor: pointer;
@@ -67,10 +68,125 @@ body{
     margin-left: auto;
     background:url("../images/go.png")  no-repeat;
     background-size: 100% 100%;
-    top:25%;
+    top:50%;
+    margin-top: -25%;
     width: 50%;
     height: 50%;
     text-align: center;
     left:25%;
 }
+.modal {
+      display: none;
+      position: fixed;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.6);
+    }
 
+    .modal-content {
+      margin: 20% auto;
+      padding: 0.4rem;
+      width: 80%;
+      height: 7.6rem;
+      background-image: url(https://yuntuma.oss-cn-shanghai.aliyuncs.com/2023/06/26/tc-29.9-2.png);
+      background-size: 100% 100%;
+      background-repeat: no-repeat;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .modal-cx {
+      position: fixed;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.6);
+      display: none;
+    }
+
+    .tczt {
+      background-color: #fff;
+      margin-top: 5rem;
+      margin-left: 0.7rem;
+      width: 6rem;
+      height: 3rem;
+      font-size: 0.5rem;
+      text-align: center;
+      border-radius: 0.1rem;
+      z-index: 3;
+    }
+
+    .tishi-text {
+      padding: 0.4rem 0;
+    }
+
+    .nr-text {
+      font-size: 0.32rem;
+      padding-bottom: 0.6rem;
+      color: #888787;
+    }
+
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 0.56rem;
+      font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+      color: black;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .ljlq {
+      position: absolute;
+      top: 6.5rem;
+      left: 0.9rem;
+      background-color: #ffd27d;
+      color: #ff1a0d;
+      height: 1rem;
+      width: 5rem;
+      text-align: center;
+      line-height: 1rem;
+      font-size: 0.36rem;
+      font-weight: 700;
+      border-radius: 0.5rem;
+    }
+    .button-box {
+      display: flex;
+    }
+
+    .button--default {
+      position: relative;
+      display: inline-block;
+      box-sizing: border-box;
+      height: 0.88rem;
+      margin: 0;
+      padding: 0;
+      font-size: 0.32rem;
+      line-height: 1.2;
+      text-align: center;
+      border-radius: 0.04rem;
+      cursor: pointer;
+      transition: opacity 0.2s;
+      -webkit-appearance: none;
+      color: #323233;
+      background-color: #fff;
+      flex: 1;
+      border: 0;
+      border-top: 1px solid #ebedf0;
+      border-right: 1px solid #ebedf0;
+    }
+
+    .dialog__confirm {
+      color: #ee0a24;
+    }

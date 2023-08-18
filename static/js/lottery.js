@@ -10,42 +10,42 @@ var winnerList=[
         id:'1',
         name:'10积分',
         logo: '../static/images/15jf@2x.png',
-        probability:'20%',
+        probability:'0%',
     },{
         id:'2',
         name:'10经验值',
         logo: '../static/images/10j@2x.png',
-        probability:'10%',
+        probability:'0%',
     },{
         id:'3',
-        name:'100元抵用券',
+        name:'看剧红包',
         logo: '../static/images/123.png',
-        probability:'10%',
+        probability:'100%',
     },{
         id:'4',
         name:'15积分',
         logo: '../static/images/15jf@2x.png',
-        probability:'10%',
+        probability:'0%',
     },{
         id:'5',
         name:'20现金券',
         logo: '../static/images/12.png',
-        probability:'10%',
+        probability:'0%',
     },{
         id:'6',
         name:'25经验值',
         logo: '../static/images/25j@2x.png',
-        probability:'10%',
+        probability:'0%',
     },{
         id:'7',
         name:'谢谢参与',
         logo: '../static/images/xx@2x.png',
-        probability:'20%',
+        probability:'0%',
     },{
         id:'8',
         name:'25积分',
         logo: '../static/images/25jf@2x.png',
-        probability:'10%',
+        probability:'0%',
     }
 ] //奖品列表
 // 有几份扇形
@@ -165,8 +165,8 @@ var number = winnerList.length;
             animateTo:2880 - angles,
             duration:8000,
             callback:function (){
-             alert(item.name)
                 $('#tupBtn').removeAttr("disabled", true);
+                $('#modal-cx').show();
             }
         });
 

@@ -175,12 +175,13 @@
 			}
 			$.ajax({
 				type: 'POST',
-				url: axiosBaseUrl + 'api/v1/duanjuorder/tuiPackorder',
+				url: axiosBaseUrl + '/api/v1/duanjuorder/tuiPackorder',
 				data: {
 					trade_no: order
 				},
+				dataType: 'json',
 				success: function (res) {
-					toast(res.msg)
+					toast(res.message)
 					$(".tk-input").val('')
 					console.log(res);
 				},

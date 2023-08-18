@@ -8,19 +8,29 @@
 <link rel="stylesheet" href="../static/css/lottery.css">
 
 <title>短剧抽奖</title>
-
+<script src="../static/js/rem.js"></script>
 </head>
  
 <body>
+	<div class='winnerBox'>
+			<div class="turnplate_box">
+					<canvas id="myCanvas" width="260px" height="260px">抱歉！浏览器不支持。</canvas>
+					<button id="tupBtn" class="turnplatw_btn">
+							<img src="../static/images/guding@2x.png" class="turnplatw_img">
+							<div class="goIcon"></div>
+					</button>
+			</div>
+	</div>
 
-<div class='winnerBox'>
-    <div class="turnplate_box">
-        <canvas id="myCanvas" width="260px" height="260px">抱歉！浏览器不支持。</canvas>
-        <button id="tupBtn" class="turnplatw_btn">
-            <img src="../static/images/guding@2x.png" class="turnplatw_img">
-            <div class="goIcon"></div>
-        </button>
-    </div>
+<div id="modal-cx" class="modal-cx" style="z-index: 2002;">
+	<div class="tczt"><div class="tishi-text">提示</div> 
+	<div class="nr-text">恭喜您抽取到短剧红包！</div> 
+		<div class="button-box">
+			<button id="payfinish" class="button--default dialog__confirm">
+			去领取
+			</button>
+		</div>
+	</div>
 </div>
 
 <!--当前页js-->
@@ -28,6 +38,11 @@
 <script src="../static/js/lottery.js"></script>
 <script src="../static/js/awardRotate.js"></script>
 
- 
+ <script>
+	$('#payfinish').on('click', function() {
+		window.location.href =
+      "https://work.weixin.qq.com/kfid/kfc3c65f4e2cad57f55";
+	})
+ </script>
 </body>
 </html>
