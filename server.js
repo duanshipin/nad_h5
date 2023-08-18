@@ -21,5 +21,5 @@ app.use(express.static(__dirname + '/'));
 // 启动服务器
 const port = 8080;
 app.listen(port, () => {
-    console.log(`服务器已启动在 http://172.16.9.38:${port}`);
+    console.log(`服务器已启动在 http://localhost:${port}`);
 });

@@ -11,6 +11,8 @@
     <script src="https://kaishen.oss-cn-beijing.aliyuncs.com/gong/static/js/CryptoJS.min.js"></script>
     <script src="https://kaishen.oss-cn-beijing.aliyuncs.com/gong/static/js/app.js"></script>
     <script src="../static/js/rem.js"></script>
+		<link rel="stylesheet" href="../static/vant/index.css" />
+
   </head>
   <style>
     body {
@@ -785,7 +787,7 @@
             </div>
             <div class="ljlq-box">
               <div class="gz-ljlq">
-                <div class="wzdl" @click="submit">我知道了</div>
+                <div class="wzdl" @click="closeRuleHandle">我知道了</div>
                 <div class="ljlq-button" @click="submit">确认领奖</div>
               </div>
             </div>
@@ -879,7 +881,6 @@
           return false;
         }
         this.loading = true;
-        localStorage.setItem("addorder", 1);
         axios
           .post(axiosBaseUrl + "/api/v1/duanjuorder/addOrder", {
             id: that.details.id || 1,
@@ -891,10 +892,16 @@
             appid: that.appid,
           })
           .then((res) => {
-            console.log('addOrder:::', res)
             let data = res.data.data;
             const response = JSON.parse(decrypt(data.data, data.key)).info;
             localStorage.setItem("randnum", response.randnum);
+            localStorage.setItem("oid", response.trade_no);
+            if (res.data.code != 200) {
+              vant.Toast(res.data.message);
+              this.loading = false;
+              return;
+            }
+
             if (response.is_hongwupay == 2) {
               setTimeout(() => {
                 this.loading = false;
@@ -921,8 +928,7 @@
                   jsApiList: ["chooseWXPay"], // 必填，需要使用的 JS 接口列表
                 });
                 wx.ready(function () {
-                  localStorage.setItem("oid", response.oid);
-                  localStorage.setItem("phone", that.form.phone);
+                  localStorage.setItem("oid", response.trade_no);
                   that.rewardOrderCreateSuccess(response);
                 });
               } else {
@@ -1107,11 +1113,18 @@
 				var orderId = localStorage.getItem('oid')
     		if (orderId) {
 					var res = await axios.post(
-						axiosBaseUrl + `/api/v1/checkOrder?orderId=` + orderId + '&randnum=' + localStorage.getItem('randnum')
+						axiosBaseUrl + `/api/v1/duanjuorder/ispay?oid=` + orderId + '&randnum=' + localStorage.getItem('randnum')
 					);
-					if (res.status === 200 && res.data.code === 200) {
-					
-					}
+          let data = res.data.data;
+          const response = JSON.parse(decrypt(data.data, data.key)).info;
+          if (response === 'no') {
+            this.submit();
+          } else {
+            setTimeout(() => {
+              window.location.href =
+                "./success.html?oid=" + orderId;
+              }, 600);
+          }
 				} else {
           this.submit();
         }
