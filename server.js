@@ -7,7 +7,7 @@ const app = express();
 
 // 创建反向代理
 const proxy = createProxyMiddleware('/api/', {
-    target: 'https://mianshuixing.com/api/',
+    target: 'https://mianshuixing.com/',
     changeOrigin: true,
     secure: false,
 });
@@ -21,5 +21,5 @@ app.use(express.static(__dirname + '/'));
 // 启动服务器
 const port = 8080;
 app.listen(port, () => {
-    console.log(`服务器已启动在 http://localhost:${port}`);
+    console.log(`服务器已启动在 http://172.16.9.38:${port}`);
 });
