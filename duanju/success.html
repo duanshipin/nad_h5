@@ -1,48 +1,89 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no,viewport-fit=cover">
-<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta charset="UTF-8">
+	<meta name="viewport"
+		content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no,viewport-fit=cover">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-<link rel="stylesheet" href="../static/css/lottery.css">
+	<link rel="stylesheet" href="../static/css/lottery.css">
 
-<title>短剧抽奖</title>
-<script src="../static/js/rem.js"></script>
+	<title>短剧抽奖</title>
+	<script src="../static/js/rem.js"></script>
 </head>
- 
-<body>
-	<div class='winnerBox'>
-			<div class="turnplate_box">
-					<canvas id="myCanvas" width="260px" height="260px">抱歉！浏览器不支持。</canvas>
-					<button id="tupBtn" class="turnplatw_btn">
-							<img src="../static/images/guding@2x.png" class="turnplatw_img">
-							<div class="goIcon"></div>
-					</button>
-			</div>
-	</div>
 
-<div id="modal-cx" class="modal-cx" style="z-index: 2002;">
-	<div class="tczt"><div class="tishi-text">提示</div> 
-	<div class="nr-text">恭喜您抽取到短剧红包！</div> 
-		<div class="button-box">
-			<button id="payfinish" class="button--default dialog__confirm">
-			去领取
+<body>
+
+	<div class="rule">
+		<span id="customerService" class="kefu"><a
+				href="https://www14.53kf.com/webCompany.php?kf_sign=jQzNTMTY5MM1MzExOTgxOTYxMTMyMDAxNzI3MjYyNjE=&amp;arg=10726261&amp;style=1&amp;language=cn&amp;charset=GBK&amp;kflist=off&amp;kf=&amp;zdkf_type=1&amp;lnk_overflow=0&amp;callback_id6ds=&amp;referer=https%3A%2F%2Fmh.d7g8.com%2Fsrc%2F%3Funid%3D64a620f42e3e5&amp;keyword=&amp;tfrom=1&amp;tpl=crystal_blue&amp;uid=167d646b58552676e3948fe6a71b7382&amp;is_group=&amp;is_group=&amp;timeStamp=1692435418878&amp;ucust_id=">
+				<p>客</p>
+				<p>服</p>
+			</a>
+		</span></div>
+	<div class='winnerBox'>
+		<div class="turnplate_box">
+			<div class="txt"><img class="img" src="../static/images/title.png" alt=""></div>
 			</button>
 		</div>
+		<div class="rui-luck-draw">
+			<div class="rui-luck-content">
+				<div class="rui-luck-box">
+					<img id="luckTurntable" src="../static/images/turntable.png" alt=""
+						class="rui-luck-content rui-luck-turntable">
+					<img id="luckPointer" onclick="startRotate(this)" src="../static/images/pointer.png"
+						class="rui-luck-pointer" />
+				</div>
+			</div>
+		</div>
+		<div class="l-btn">
+			<span><img class="img" src="../static/images/1.png" alt=""></span>
+			<span><img class="img" src="../static/images/2.png" alt=""></span>
+		</div>
 	</div>
-</div>
 
-<!--当前页js-->
-<script src="../static/js/jquery-1.7.2.min.js"></script>
-<script src="../static/js/lottery.js"></script>
-<script src="../static/js/awardRotate.js"></script>
+	<div id="modal-cx" class="modal-cx" style="z-index: 2002;">
+		<div class="tczt">
+			<div class="tishi-text">提示</div>
+			<div class="nr-text">恭喜您抽取到短剧红包！</div>
+			<div class="button-box">
+				<button id="payfinish" class="button--default dialog__confirm">
+					去领取
+				</button>
+			</div>
+		</div>
+	</div>
 
- <script>
-	$('#payfinish').on('click', function() {
-		window.location.href =
-      "https://work.weixin.qq.com/kfid/kfc3c65f4e2cad57f55";
-	})
- </script>
+	<!--当前页js-->
+	<script src="../static/js/jquery.min.js"></script>
+	<script src="../static/js/luckDraw.js"></script>
+	<script>
+		// 转盘旋转，从左向右逆时针计算奖品
+		var luckArr = ['100减99优惠券', '谢谢参与', '39减10优惠券', '谢谢参与', '59减15优惠券', '谢谢参与', '谢谢参与', '59减15优惠券'];
+		var luck = new LuckDraw();
+		var startRotate = function (elem) {
+			luck._init({
+				rotateId: '#luckTurntable',
+				luckNumber: Math.floor(Math.random() * (5 - 0) + 0),
+				typeNumber: 6,
+				time: 2000,
+				type: 'turntable',
+				circleNumber: 10,
+				success: function (res) {
+					$('#modal-cx').show();
+					alert(luckArr[res.luckNumber]);
+				}
+			});
+		}
+	</script>
+
+	<script>
+		$('#payfinish').on('click', function () {
+			window.location.href =
+				"https://www14.53kf.com/webCompany.php?kf_sign=jQzNTMTY5MM1MzExOTgxOTYxMTMyMDAxNzI3MjYyNjE=&arg=10726261&style=1&language=cn&charset=GBK&kflist=off&kf=&zdkf_type=1&lnk_overflow=0&callback_id6ds=&referer=https%3A%2F%2Fmh.d7g8.com%2Fsrc%2F%3Funid%3D64a620f42e3e5&keyword=&tfrom=1&tpl=crystal_blue&uid=167d646b58552676e3948fe6a71b7382&is_group=&is_group=&timeStamp=1692435418878&ucust_id=";
+		})
+	</script>
 </body>
+
 </html>

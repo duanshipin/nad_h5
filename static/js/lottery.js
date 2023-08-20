@@ -166,50 +166,15 @@ var number = winnerList.length;
             duration:8000,
             callback:function (){
                 $('#tupBtn').removeAttr("disabled", true);
-                $('#modal-cx').show();
             }
         });
 
     }
     //点击抽奖
     $(document).on('click','#tupBtn,.again',function(){
-        //转盘旋转过程“开始抽奖”按钮无法点击
         $('#tupBtn').attr("disabled", true);
-        // 中奖率randomRate
-        var randomRate = []
-        $.each(winnerList, function (i, item) {
-            randomRate.push(item.probability)
-        })
-        var item = rnd(randomRate);
-        runCup(item, winnerList[item]);
+        runCup(1, winnerList[1]);
     })
-    //概率计算
-    function rnd(rate){
-        var random = Math.floor(Math.random() * 100);
-        var myRandom = [];
-        var randomList = [];
-        var randomParent = [];
-        for(var i = 0; i < 100; i++){
-            myRandom.push(parseInt([i]) + 1);
-        }
-        for(var i = 0; i < rate.length; i++){
-            var temp = [];
-            var start = 0;
-            var end = 0;
-            randomList.push(parseInt(rate[i].split('%')[0]));
-            for(var j = 0; j < randomList.length; j++){
-                start += randomList[j-1] || 0
-                end += randomList[j]
-            }
-            temp = myRandom.slice(start, end);
-            randomParent.push(temp)
-        }
-        for(var i = 0; i < randomParent.length; i++){
-            if($.inArray(random, randomParent[i]) > 0){
-                return(i+1)
-            }
-        }
-    }
 
 
 
