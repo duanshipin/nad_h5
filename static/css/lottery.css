@@ -201,6 +201,7 @@ body{
 
     .rui-luck-draw {
       position: relative;
+      z-index: 2;
   }
 
   .rui-luck-content {
@@ -249,10 +250,16 @@ body{
   .l-btn {
     display: flex;
     justify-content: space-between;
+    position: relative;
+    margin-top: -40px;
+    z-index: 3;
   }
   .l-btn span {
     width: 49%;
     cursor: pointer;
+  }
+  .l-btn span:first-child {
+    width: 45%;
   }
   .l-btn span img {
     width: 100%;
@@ -286,4 +293,23 @@ body{
   }
   .rule span p {
     margin: 0;padding: 0;
+  }
+  .slg {
+    width: 80%;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+    margin-top: -20px;
+  }
+  .slg img {
+    width: 100%;
+  }
+  .slg .re {
+    position: absolute;
+    width: 100%;
+    color: #fff;
+    font-size: 12px;
+    left: 0;
+    top: 51px;
+    text-align: center;
   }

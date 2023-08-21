@@ -37,9 +37,15 @@
 				</div>
 			</div>
 		</div>
+		<div class="slg">
+			<img class="img" src="../static/images/slg.png" alt="">
+			<div class="re">抽奖次数剩余: <span>1</span>次</div>
+		</div>
 		<div class="l-btn">
-			<span><img class="img" src="../static/images/1.png" alt=""></span>
-			<span><img class="img" src="../static/images/2.png" alt=""></span>
+			<span id="viewLog"><img class="img" src="../static/images/1.png" alt=""></span>
+			<span id="buyBtn">
+				<a href=""><img class="img" src="../static/images/2.png" alt=""></a>
+			</span>
 		</div>
 	</div>
 
@@ -60,19 +66,23 @@
 	<script src="../static/js/luckDraw.js"></script>
 	<script>
 		// 转盘旋转，从左向右逆时针计算奖品
-		var luckArr = ['100减99优惠券', '谢谢参与', '39减10优惠券', '谢谢参与', '59减15优惠券', '谢谢参与', '谢谢参与', '59减15优惠券'];
+		var luckArr = ['0-888', '1-谢谢参与', '2-10000看剧积分', '3-20看剧积分', '4-20红包', '5-谢谢参与', '6-20红包', '7-随机金额购物代金券'];
 		var luck = new LuckDraw();
 		var startRotate = function (elem) {
+			// 根据下单支付生成的订单号 判断此订单号有没有抽过奖
+			// 已抽奖则必须去再下单才能抽奖 否则可抽奖一次再去下单
+			alert('你已抽奖');
 			luck._init({
 				rotateId: '#luckTurntable',
-				luckNumber: Math.floor(Math.random() * (5 - 0) + 0),
-				typeNumber: 6,
-				time: 2000,
+				luckNumber: Math.floor(Math.random() * 8),
+				typeNumber: 8,
+				time: 3000,
 				type: 'turntable',
 				circleNumber: 10,
 				success: function (res) {
+					console.log(res)
+					$('.nr-text').text('恭喜您获得' + luckArr[res.luckNumber]);
 					$('#modal-cx').show();
-					alert(luckArr[res.luckNumber]);
 				}
 			});
 		}
