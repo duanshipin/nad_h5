@@ -880,14 +880,14 @@
           .then((res) => {
             let data = res.data.data;
             const response = JSON.parse(decrypt(data.data, data.key)).info;
-            localStorage.setItem("randnum", response.randnum);
-            localStorage.setItem("oid", response.trade_no);
-            if (res.data.code != 200) {
+            if (res.code === 200) {
+              localStorage.setItem("randnum", response.randnum);
+              localStorage.setItem("oid", response.trade_no);
+            } else {
               vant.Toast(res.data.message);
               this.loading = false;
               return;
             }
-
             if (response.is_hongwupay == 2) {
               setTimeout(() => {
                 this.loading = false;
@@ -1096,10 +1096,11 @@
         location.href = "./refund.html";
       },
 			async checkIsPay() {
-				var orderId = localStorage.getItem('oid')
-    		if (orderId) {
+				var orderId = localStorage.getItem('oid');
+        var randnum = localStorage.getItem('randnum')
+    		if (orderId && randnum) {
 					var res = await axios.post(
-						axiosBaseUrl + `/api/v1/duanjuorder/ispay?oid=` + orderId + '&randnum=' + localStorage.getItem('randnum')
+						axiosBaseUrl + `/api/v1/duanjuorder/ispay?oid=` + orderId + '&randnum=' + randnum
 					);
           let data = res.data.data;
           const response = JSON.parse(decrypt(data.data, data.key)).info;
@@ -1130,8 +1131,8 @@
         urlCode: getQueryVariable("urlCode"),
       };
       this.getDetails();
-      
-      if (orderJSON) {
+      localStorage.setItem("currentUrl", location.href);
+      if (localStorage.getItem("oid")) {
         this.vouchersShow = true;
       }
 

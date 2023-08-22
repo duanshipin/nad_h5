@@ -124,7 +124,6 @@ body{
       margin-top: 5rem;
       margin-left: 0.7rem;
       width: 6rem;
-      height: 3rem;
       font-size: 0.5rem;
       text-align: center;
       border-radius: 0.1rem;
@@ -141,6 +140,11 @@ body{
       color: #888787;
     }
 
+    .nr-text p {
+      margin: 0;
+      padding: 0;
+      margin-bottom: 8px;
+    }
     .close {
       color: #aaa;
       float: right;

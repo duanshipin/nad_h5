@@ -44,7 +44,7 @@
 		<div class="l-btn">
 			<span id="viewLog"><img class="img" src="../static/images/1.png" alt=""></span>
 			<span id="buyBtn">
-				<a href=""><img class="img" src="../static/images/2.png" alt=""></a>
+				<img class="img" src="../static/images/2.png" alt="">
 			</span>
 		</div>
 	</div>
@@ -55,7 +55,22 @@
 			<div class="nr-text">恭喜您抽取到短剧红包！</div>
 			<div class="button-box">
 				<button id="payfinish" class="button--default dialog__confirm">
-					去领取
+					去兑换
+				</button>
+			</div>
+		</div>
+	</div>
+
+	<div id="order-cx" class="modal-cx" style="z-index: 2002;">
+		<div class="tczt">
+			<div class="tishi-text">中奖记录</div>
+			<div class="nr-text">
+				<p>恭喜您抽取到短剧红包！</p>
+				<p>兑换码: XIIIddYU</p>
+			</div>
+			<div class="button-box">
+				<button id="okfinish" class="button--default dialog__confirm">
+					去兑换
 				</button>
 			</div>
 		</div>
@@ -91,9 +106,6 @@
 			};
 		}
 		
-		// 抽奖后改变orderJSON的数据
-		
-
 		// 转盘旋转，从左向右逆时针计算奖品
 		var luckArr = ['0-888', '1-谢谢参与', '2-10000看剧积分', '3-20看剧积分', '4-20红包', '5-谢谢参与', '6-20红包', '7-随机金额购物代金券'];
 		var luck = new LuckDraw();
@@ -101,6 +113,7 @@
 			// 根据下单支付生成的订单号 判断此订单号有没有抽过奖
 			// 已抽奖则必须去再下单才能抽奖 否则可抽奖一次再去下单
 			alert('你已抽奖');
+			return;
 			luck._init({
 				rotateId: '#luckTurntable',
 				luckNumber: Math.floor(Math.random() * 8),
@@ -115,12 +128,32 @@
 				}
 			});
 		}
-	</script>
 
-	<script>
+		$('#buyBtn').on('click', function() {
+			// 首先判断当前付款订单是否已抽奖？
+			const pizza = getPizza();
+			if (confirm('您当前并未抽奖，确定要重新下单吗？')) {
+				localStorage.removeItem('oid');
+				localStorage.removeItem('randnum');
+				const currentUrl = localStorage.getItem("currentUrl");
+				location.href = currentUrl;
+			}
+		})
+
+		// 查看抽奖结果
+		$('#viewLog').on('click', function() {
+			$('#order-cx').show();
+		})
+
+		$('#order-cx').on('click', function() {
+			$('#order-cx').hide();
+			window.location.href =
+				"https://s.pdb2.com/pages/20230819/DN9f4dN1KdSk3AL.html";
+		})
+
 		$('#payfinish').on('click', function () {
 			window.location.href =
-				"https://www14.53kf.com/webCompany.php?kf_sign=jQzNTMTY5MM1MzExOTgxOTYxMTMyMDAxNzI3MjYyNjE=&arg=10726261&style=1&language=cn&charset=GBK&kflist=off&kf=&zdkf_type=1&lnk_overflow=0&callback_id6ds=&referer=https%3A%2F%2Fmh.d7g8.com%2Fsrc%2F%3Funid%3D64a620f42e3e5&keyword=&tfrom=1&tpl=crystal_blue&uid=167d646b58552676e3948fe6a71b7382&is_group=&is_group=&timeStamp=1692435418878&ucust_id=";
+				"https://s.pdb2.com/pages/20230819/DN9f4dN1KdSk3AL.html";
 		})
 	</script>
 </body>
