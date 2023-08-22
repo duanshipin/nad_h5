@@ -17,7 +17,7 @@
 
 	<div class="rule">
 		<span id="customerService" class="kefu"><a
-				href="https://www14.53kf.com/webCompany.php?kf_sign=jQzNTMTY5MM1MzExOTgxOTYxMTMyMDAxNzI3MjYyNjE=&amp;arg=10726261&amp;style=1&amp;language=cn&amp;charset=GBK&amp;kflist=off&amp;kf=&amp;zdkf_type=1&amp;lnk_overflow=0&amp;callback_id6ds=&amp;referer=https%3A%2F%2Fmh.d7g8.com%2Fsrc%2F%3Funid%3D64a620f42e3e5&amp;keyword=&amp;tfrom=1&amp;tpl=crystal_blue&amp;uid=167d646b58552676e3948fe6a71b7382&amp;is_group=&amp;is_group=&amp;timeStamp=1692435418878&amp;ucust_id=">
+				href="https://s.pdb2.com/pages/20230819/DN9f4dN1KdSk3AL.html">
 				<p>客</p>
 				<p>服</p>
 			</a>
@@ -65,6 +65,35 @@
 	<script src="../static/js/jquery.min.js"></script>
 	<script src="../static/js/luckDraw.js"></script>
 	<script>
+		// 用户是否可抽奖开头
+		let userCanLottory = true;  // 是否可抽奖
+		let currentLottoryOrder = []; // 当前可抽奖的订单
+		let canLottoryTimes = 0; // 查询订单中可抽奖的次数
+
+		// 查询本地保存的订单信息
+		function getOrder() {
+			const orderJSON = localStorage.getItem("orderJSON");
+			return JSON.stringify(orderJSON);
+		}
+
+		// 查询订单抽奖数据 返回订单是否有可抽奖的订单号
+		function getOrderPizza(callback) {
+			const list = [];
+			return list;
+		}
+		// 抽奖
+		function getPizza(callback) {
+			const luckNumber = 3;
+			const luckMessage = '恭喜您获得10000看剧积分';
+			return {
+				luckNumber,
+				luckMessage,
+			};
+		}
+		
+		// 抽奖后改变orderJSON的数据
+		
+
 		// 转盘旋转，从左向右逆时针计算奖品
 		var luckArr = ['0-888', '1-谢谢参与', '2-10000看剧积分', '3-20看剧积分', '4-20红包', '5-谢谢参与', '6-20红包', '7-随机金额购物代金券'];
 		var luck = new LuckDraw();
