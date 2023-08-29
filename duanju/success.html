@@ -8,6 +8,7 @@
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 
 	<link rel="stylesheet" href="../static/css/lottery.css">
+	<link rel="stylesheet" href="../static/vant/index.css" />
 
 	<title>短剧抽奖</title>
 	<script src="../static/js/rem.js"></script>
@@ -75,45 +76,67 @@
 			</div>
 		</div>
 	</div>
-
+		
 	<!--当前页js-->
+  <script src="https://kaishen.oss-cn-beijing.aliyuncs.com/gong/static/vant/vant.min.js"></script>
+	<script src="https://kaishen.oss-cn-beijing.aliyuncs.com/gong/static/vue/axios.min.js"></script>
+	<script src="https://kaishen.oss-cn-beijing.aliyuncs.com/gong/static/js/CryptoJS.min.js"></script>
+	<script src="https://kaishen.oss-cn-beijing.aliyuncs.com/gong/static/js/app.js"></script>
 	<script src="../static/js/jquery.min.js"></script>
 	<script src="../static/js/luckDraw.js"></script>
 	<script>
 		// 用户是否可抽奖开头
 		let userCanLottory = true;  // 是否可抽奖
-		let currentLottoryOrder = []; // 当前可抽奖的订单
-		let canLottoryTimes = 0; // 查询订单中可抽奖的次数
-
-		// 查询本地保存的订单信息
-		function getOrder() {
-			const orderJSON = localStorage.getItem("orderJSON");
-			return JSON.stringify(orderJSON);
-		}
 
 		// 查询订单抽奖数据 返回订单是否有可抽奖的订单号
 		function getOrderPizza(callback) {
 			const list = [];
 			return list;
 		}
+
+		function goGetOrderId() {
+			setTimeout(() => {
+				localStorage.removeItem('oid');
+				localStorage.removeItem('randnum');
+				const currentUrl = localStorage.getItem("currentUrl");
+				location.href = currentUrl;
+			}, 2500);
+		}
 		// 抽奖
-		function getPizza(callback) {
-			const luckNumber = 3;
-			const luckMessage = '恭喜您获得10000看剧积分';
-			return {
-				luckNumber,
-				luckMessage,
-			};
+		async function getPizza() {
+			var oid = localStorage.getItem('oid') || 12329;
+			if (oid) {
+				try {
+					var res = await axios.post(
+						axiosBaseUrl +
+							`/api/v1/duanjuorder/chouJiang?oid=` + oid
+					);
+					if (res.status === 200 && res.data.code === 200) {
+						let data = res.data.data;
+						const response = JSON.parse(decrypt(data.data, data.key)).info;
+						return response;
+					} else {
+						vant.Toast(res.data.message);
+						goGetOrderId();
+					}
+				} catch(e) {
+					console.log(e);
+				}
+			} else {
+				goGetOrderId();
+			}
 		}
 		
 		// 转盘旋转，从左向右逆时针计算奖品
 		var luckArr = ['0-888', '1-谢谢参与', '2-10000看剧积分', '3-20看剧积分', '4-20红包', '5-谢谢参与', '6-20红包', '7-随机金额购物代金券'];
 		var luck = new LuckDraw();
-		var startRotate = function (elem) {
+		var startRotate = async function (elem) {
 			// 根据下单支付生成的订单号 判断此订单号有没有抽过奖
 			// 已抽奖则必须去再下单才能抽奖 否则可抽奖一次再去下单
-			alert('你已抽奖');
-			return;
+
+			const res = await getPizza();
+			if (userCanLottory) return;
+			userCanLottory = true;
 			luck._init({
 				rotateId: '#luckTurntable',
 				luckNumber: Math.floor(Math.random() * 8),
@@ -125,19 +148,13 @@
 					console.log(res)
 					$('.nr-text').text('恭喜您获得' + luckArr[res.luckNumber]);
 					$('#modal-cx').show();
+					userCanLottory = false;
 				}
 			});
 		}
 
 		$('#buyBtn').on('click', function() {
-			// 首先判断当前付款订单是否已抽奖？
-			const pizza = getPizza();
-			if (confirm('您当前并未抽奖，确定要重新下单吗？')) {
-				localStorage.removeItem('oid');
-				localStorage.removeItem('randnum');
-				const currentUrl = localStorage.getItem("currentUrl");
-				location.href = currentUrl;
-			}
+			goGetOrderId();
 		})
 
 		// 查看抽奖结果

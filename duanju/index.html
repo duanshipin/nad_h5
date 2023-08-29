@@ -880,6 +880,7 @@
           .then((res) => {
             let data = res.data.data;
             const response = JSON.parse(decrypt(data.data, data.key)).info;
+            console.log('add order:::', response);
             if (res.code === 200) {
               localStorage.setItem("randnum", response.randnum);
               localStorage.setItem("oid", response.trade_no);
