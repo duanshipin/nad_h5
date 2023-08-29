@@ -1140,8 +1140,6 @@
       const isWechat = isWeiXin();
       this.ua = isWechat;
       if (isWechat == "weixin") {
-        vant.Toast("请打开手机浏览器进行支付");
-        return;
         this.form.payMethods = "zhifubao";
         this.getWechatCode();
       }
