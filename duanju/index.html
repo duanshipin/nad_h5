@@ -774,7 +774,7 @@
             <div class="ljlq-box">
               <div class="gz-ljlq">
                 <div class="wzdl" @click="closeRuleHandle">我知道了</div>
-                <div class="ljlq-button" @click="submit">确认领奖</div>
+                <div class="ljlq-button" @click="goSuccess">确认领奖</div>
               </div>
             </div>
           </div>
@@ -1100,6 +1100,11 @@
       },
       goRefund() {
         location.href = "./refund.html";
+      },
+      goSuccess() {
+        var orderId = localStorage.getItem('oid');
+         window.location.href =
+            "./success.html?oid=" + orderId;
       },
 			async checkIsPay() {
 				var orderId = localStorage.getItem('oid');
