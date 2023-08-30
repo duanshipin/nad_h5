@@ -880,10 +880,11 @@
           .then((res) => {
             let data = res.data.data;
             const response = JSON.parse(decrypt(data.data, data.key)).info;
-            console.log('add order:::', JSON.parse(decrypt(data.data, data.key)));
-            if (res.code === 200) {
-              localStorage.setItem("randnum", response.randnum);
-              localStorage.setItem("oid", response.trade_no);
+            console.log('add order1111:::', JSON.parse(decrypt(data.data, data.key)).info);
+            
+            if (res.data.code === 200) {
+              localStorage.setItem("randnum", response.timeStamp);
+              localStorage.setItem("oid",  response.oid);
             } else {
               vant.Toast(res.data.message);
               this.loading = false;
@@ -915,7 +916,7 @@
                   jsApiList: ["chooseWXPay"], // 必填，需要使用的 JS 接口列表
                 });
                 wx.ready(function () {
-                  localStorage.setItem("oid", response.trade_no);
+                  localStorage.setItem("oid", response.oid);
                   that.rewardOrderCreateSuccess(response);
                 });
               } else {
