@@ -19,7 +19,7 @@ app.use('/api/', proxy);
 app.use(express.static(__dirname + '/'));
 
 // 启动服务器
-const port = 8080;
+const port = 80;
 app.listen(port, () => {
     console.log(`服务器已启动在 http://localhost:${port}`);
 });
