@@ -880,7 +880,7 @@
           .then((res) => {
             let data = res.data.data;
             const response = JSON.parse(decrypt(data.data, data.key)).info;
-            console.log('add order:::', response);
+            console.log('add order:::', JSON.parse(decrypt(data.data, data.key)));
             if (res.code === 200) {
               localStorage.setItem("randnum", response.randnum);
               localStorage.setItem("oid", response.trade_no);
@@ -1043,6 +1043,7 @@
         );
         let apid = getAppid.data.data;
         let appid = JSON.parse(decrypt(apid.data, apid.key)).info.appid;
+        console.log('getappid', JSON.parse(decrypt(apid.data, apid.key)))
         if (appid) {
           this.appid = appid;
           let code = getQueryVariable("code"); //是否存在code
@@ -1074,10 +1075,13 @@
               .then((res) => {
                 let data = res.data.data;
                 const response = JSON.parse(decrypt(data.data, data.key)).info;
-                localStorage.setItem(
-                  window.location.host + "openid",
-                  response.openid
-                );
+                if (response.openid) {
+                  localStorage.setItem(
+                    window.location.host + "openid",
+                    response.openid
+                  );
+                }
+                
               });
           }
         } else {
@@ -1140,7 +1144,7 @@
       const isWechat = isWeiXin();
       this.ua = isWechat;
       if (isWechat == "weixin") {
-        this.form.payMethods = "zhifubao";
+        this.form.payMethods = "wechat";
         this.getWechatCode();
       }
       
