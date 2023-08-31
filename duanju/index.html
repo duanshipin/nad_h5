@@ -950,7 +950,7 @@
       // 微信h5支付
       rewardOrderH5CreateSuccess(res) {
         window.location.href = res.h5_url;
-        this.loading = false;
+        this.vouchersShow = false;
       },
       // 发起支付
       rewardOrderCreateSuccess(res) {
@@ -996,7 +996,7 @@
                 icon: "success",
               });
               setTimeout(() => {
-                this.loading = false;
+                this.vouchersShow = false;
               }, 2000);
               setTimeout(() => {
                 window.location.href =
@@ -1005,7 +1005,7 @@
               }, 600);
             } else {
               setTimeout(() => {
-                this.loading = false;
+                this.vouchersShow = false;
               }, 2000);
               vant.Toast(res.errMsg);
             }
@@ -1013,10 +1013,12 @@
           // 支付取消回调函数
           cancel: function (res) {
             vant.Toast("取消支付");
+            this.vouchersShow = false;
           },
           // 支付失败回调函数
           fail: function (res) {
             vant.Toast("支付失败");
+            this.vouchersShow = false;
           },
         });
       },

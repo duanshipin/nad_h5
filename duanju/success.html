@@ -113,15 +113,18 @@
 					if (res.status === 200 && res.data.code === 200) {
 						let data = res.data.data;
 						const response = JSON.parse(decrypt(data.data, data.key)).info;
+						console.log('pizza', response);
 						return response;
 					} else {
 						vant.Toast(res.data.message);
 						// goGetOrderId();
+						userCanLottory = false;
 					}
 				} catch(e) {
 					console.log(e);
 				}
 			} else {
+				userCanLottory = false;
 				goGetOrderId();
 			}
 		}
@@ -139,6 +142,11 @@
 		}
 		var startRotate = async function (elem) {
 			const resp = await getPizza();
+			if (!resp || resp && resp.jiang_id > 7) {
+				vant.Toast('抽奖程序出错！');
+				userCanLottory = false;
+				return;
+			}
 			luck._init({
 				rotateId: '#luckTurntable',
 				luckNumber: resp.jiang_id,
