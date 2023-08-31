@@ -33,7 +33,7 @@
 				<div class="rui-luck-box">
 					<img id="luckTurntable" src="../static/images/turntable.png" alt=""
 						class="rui-luck-content rui-luck-turntable">
-					<img id="luckPointer" onclick="startRotate(this)" src="../static/images/pointer.png"
+					<img id="luckPointer" onclick="startRotateFn(this)" src="../static/images/pointer.png"
 						class="rui-luck-pointer" />
 				</div>
 			</div>
@@ -53,7 +53,7 @@
 	<div id="modal-cx" class="modal-cx" style="z-index: 2002;">
 		<div class="tczt">
 			<div class="tishi-text">提示</div>
-			<div class="nr-text">恭喜您抽取到短剧红包！</div>
+			<div class="nr-text"></div>
 			<div class="button-box">
 				<button id="payfinish" class="button--default dialog__confirm">
 					去兑换
@@ -66,8 +66,6 @@
 		<div class="tczt">
 			<div class="tishi-text">中奖记录</div>
 			<div class="nr-text">
-				<p>恭喜您抽取到短剧红包！</p>
-				<p>兑换码: XIIIddYU</p>
 			</div>
 			<div class="button-box">
 				<button id="okfinish" class="button--default dialog__confirm">
@@ -87,7 +85,7 @@
 	<script src="../static/js/luckDraw.js"></script>
 	<script>
 		// 用户是否可抽奖开头
-		let userCanLottory = true;  // 是否可抽奖
+		let userCanLottory = false;  // 是否可抽奖
 
 		// 查询订单抽奖数据 返回订单是否有可抽奖的订单号
 		function getOrderPizza(callback) {
@@ -105,7 +103,7 @@
 		}
 		// 抽奖
 		async function getPizza() {
-			var oid = localStorage.getItem('oid') || 12329;
+			var oid = localStorage.getItem('oid');
 			if (oid) {
 				try {
 					var res = await axios.post(
@@ -129,25 +127,27 @@
 		}
 		
 		// 转盘旋转，从左向右逆时针计算奖品
-		var luckArr = ['0-888', '1-谢谢参与', '2-10000看剧积分', '3-20看剧积分', '4-20红包', '5-谢谢参与', '6-20红包', '7-随机金额购物代金券'];
+		var luckArr = ['888元红包', '谢谢参与', '10000看剧积分', '看剧积分', '20元红包', '谢谢参与', '20红包', '随机金额购物代金券'];
 		var luck = new LuckDraw();
-		var startRotate = async function (elem) {
-			// 根据下单支付生成的订单号 判断此订单号有没有抽过奖
-			// 已抽奖则必须去再下单才能抽奖 否则可抽奖一次再去下单
-
-			const res = await getPizza();
-			if (userCanLottory) return;
+		function startRotateFn(elem) {
+			if (userCanLottory) {
+				vant.Toast('请务重复点击！');
+				return;
+			}
 			userCanLottory = true;
+			startRotate(elem);
+		}
+		var startRotate = async function (elem) {
+			const resp = await getPizza();
 			luck._init({
 				rotateId: '#luckTurntable',
-				luckNumber: Math.floor(Math.random() * 8),
+				luckNumber: resp.jiang_id,
 				typeNumber: 8,
 				time: 3000,
 				type: 'turntable',
 				circleNumber: 10,
 				success: function (res) {
-					console.log(res)
-					$('.nr-text').text('恭喜您获得' + luckArr[res.luckNumber]);
+					$('.nr-text').html('恭喜您获得' + luckArr[resp.jiang_id] + '<br>兑换码是：' + resp.quan_code);
 					$('#modal-cx').show();
 					userCanLottory = false;
 				}
