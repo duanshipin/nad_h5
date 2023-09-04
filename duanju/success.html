@@ -85,7 +85,7 @@
 	<script src="../static/js/luckDraw.js"></script>
 	<script>
 		// 用户是否可抽奖开头
-		let userCanLottory = false;  // 是否可抽奖
+		let disabled = false;  // 是否可抽奖
 
 		// 查询订单抽奖数据 返回订单是否有可抽奖的订单号
 		function getOrderPizza(callback) {
@@ -118,13 +118,13 @@
 					} else {
 						vant.Toast(res.data.message);
 						// goGetOrderId();
-						userCanLottory = false;
+						disabled = false;
 					}
 				} catch(e) {
 					console.log(e);
 				}
 			} else {
-				userCanLottory = false;
+				disabled = false;
 				goGetOrderId();
 			}
 		}
@@ -133,31 +133,31 @@
 		var luckArr = ['888元红包', '谢谢参与', '10000看剧积分', '看剧积分', '20元红包', '谢谢参与', '20红包', '随机金额购物代金券'];
 		var luck = new LuckDraw();
 		function startRotateFn(elem) {
-			if (userCanLottory) {
+			if (disabled) {
 				vant.Toast('请务重复点击！');
 				return;
 			}
-			userCanLottory = true;
+			disabled = true;
 			startRotate(elem);
 		}
 		var startRotate = async function (elem) {
 			const resp = await getPizza();
-			if (!resp || resp && resp.jiang_id > 7) {
+			if (!resp || resp && resp.jiang_data > 7) {
 				vant.Toast('抽奖程序出错！');
-				userCanLottory = false;
+				disabled = false;
 				return;
 			}
 			luck._init({
 				rotateId: '#luckTurntable',
-				luckNumber: resp.jiang_id,
+				luckNumber: resp.jiang_data,
 				typeNumber: 8,
 				time: 3000,
 				type: 'turntable',
 				circleNumber: 10,
 				success: function (res) {
-					$('.nr-text').html('恭喜您获得' + luckArr[resp.jiang_id] + '<br>兑换码是：' + resp.quan_code);
+					$('.nr-text').html('恭喜您获得' + luckArr[resp.jiang_data] + '<br>兑换码是：' + resp.quan_code);
 					$('#modal-cx').show();
-					userCanLottory = false;
+					disabled = false;
 				}
 			});
 		}
